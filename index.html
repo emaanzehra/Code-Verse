@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="1024x1024" href="favicon.png">
+    <link rel="icon" type="image/png" sizes="4096x4096" href="favicon-4096.png">
+    <link rel="icon" type="image/png" sizes="2048x2048" href="favicon-2048.png">
+    <link rel="icon" type="image/png" sizes="1024x1024" href="favicon-1024.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="favicon-256.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+    <link rel="icon" href="favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="mask-icon" href="icon.svg" color="#CAFF4C">
+    <title>CodeVerse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --lime: #CAFF4C; --coral: #FF5C5C; --sky: #3DCCFF; --violet: #A855F7;
+            --ink: #0D0D14; --ink2: #16161F; --ink3: #1E1E2A; --card: #1A1A26;
+            --border: rgba(255,255,255,0.08); --text: #F0F0FF; --muted: #8888AA; --radius: 18px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--ink); color: var(--text); overflow-x: hidden; cursor: none; }
+
+        /* ── CROSSHAIR CURSOR ── */
+        #crosshair {
+            position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+            width: 0; height: 0;
+        }
+        .ch-h, .ch-v {
+            position: absolute; background: var(--lime);
+            transition: opacity 0.2s, width 0.2s, height 0.2s;
+        }
+        .ch-h { width: 24px; height: 1.5px; top: -0.75px; left: -12px; }
+        .ch-v { width: 1.5px; height: 24px; top: -12px; left: -0.75px; }
+        .ch-dot { position: absolute; width: 5px; height: 5px; background: var(--lime); border-radius: 50%; top: -2.5px; left: -2.5px; box-shadow: 0 0 8px var(--lime); }
+        .ch-ring {
+            position: absolute; width: 28px; height: 28px;
+            border: 1.5px solid rgba(202,255,76,0.5); border-radius: 50%;
+            top: -14px; left: -14px;
+            transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), border-color 0.2s;
+        }
+        body.cursor-hover .ch-ring { transform: scale(1.6); border-color: var(--coral); }
+        body.cursor-hover .ch-h, body.cursor-hover .ch-v { background: var(--coral); }
+        body.cursor-hover .ch-dot { background: var(--coral); box-shadow: 0 0 10px var(--coral); }
+
+        /* sparkle trail */
+        .sparkle {
+            position: fixed; pointer-events: none; z-index: 9998;
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--lime);
+            animation: sparkleFade 0.6s ease forwards;
+        }
+        @keyframes sparkleFade {
+            0%   { transform: scale(1) translateY(0); opacity: 0.9; }
+            100% { transform: scale(0) translateY(-12px); opacity: 0; }
+        }
+
+        /* NOISE + BLOBS */
+        body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1; opacity: 0.35; }
+        .blob { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; opacity: 0.18; animation: drift 18s ease-in-out infinite alternate; }
+        .blob-1 { width: 500px; height: 500px; background: var(--violet); top: -150px; right: -100px; }
+        .blob-2 { width: 400px; height: 400px; background: var(--sky); bottom: 10%; left: -120px; animation-delay: -6s; }
+        .blob-3 { width: 300px; height: 300px; background: var(--lime); top: 50%; right: 10%; animation-delay: -12s; }
+        @keyframes drift { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-40px) scale(1.08)} 100%{transform:translate(-20px,30px) scale(0.95)} }
+
+        /* NAV */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 18px 40px; display: flex; align-items: center; justify-content: space-between; background: rgba(13,13,20,0.7); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); transition: all 0.3s ease; }
+        .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; color: var(--lime); letter-spacing: -1px; text-decoration: none; }
+        .nav-logo span { color: var(--text); }
+        .nav-links { display: flex; gap: 6px; align-items: center; }
+        .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; padding: 7px 15px; border-radius: 50px; transition: all 0.25s ease; }
+        .nav-links a:hover { color: var(--text); background: var(--border); }
+        .nav-cta { background: var(--lime) !important; color: var(--ink) !important; font-weight: 700 !important; padding: 8px 20px !important; }
+        .nav-cta:hover { transform: scale(1.05) !important; background: #d8ff6a !important; }
+        .nav-guest { background: rgba(255,255,255,0.06) !important; color: var(--text) !important; font-weight: 600 !important; border: 1px solid var(--border) !important; }
+        .nav-guest:hover { background: rgba(255,255,255,0.1) !important; }
+
+        /* USER STATE BADGE */
+        /* PROFILE DROPDOWN */
+        .profile-wrap { position: relative; display: none; }
+        body.registered .profile-wrap { display: block; }
+        body.registered .nav-cta, body.registered .nav-guest, body.registered .nav-signin { display: none !important; }
+        body.guest-mode .nav-cta { display: none !important; }
+
+        .profile-trigger {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(202,255,76,0.08); border: 1px solid rgba(202,255,76,0.2);
+            border-radius: 50px; padding: 5px 14px 5px 5px;
+            cursor: none; transition: all 0.25s ease;
+        }
+        .profile-trigger:hover { background: rgba(202,255,76,0.14); border-color: rgba(202,255,76,0.4); }
+        .profile-avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--lime), #a8e63d);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 800; color: var(--ink);
+            flex-shrink: 0;
+        }
+        .profile-trigger-text { display: flex; flex-direction: column; line-height: 1.2; }
+        .profile-trigger-name { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--lime); }
+        .profile-trigger-roll { font-size: 0.68rem; color: var(--muted); letter-spacing: 0.3px; }
+
+        .profile-dropdown {
+            position: absolute; top: calc(100% + 12px); right: 0;
+            width: 280px;
+            background: var(--ink2); border: 1px solid rgba(202,255,76,0.2);
+            border-radius: 18px; padding: 0;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+            opacity: 0; pointer-events: none; transform: translateY(-8px) scale(0.97);
+            transition: all 0.3s cubic-bezier(0.34,1.2,0.64,1);
+            overflow: hidden; z-index: 200;
+        }
+        .profile-dropdown.open { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
+        .profile-dropdown-header {
+            background: linear-gradient(135deg, rgba(202,255,76,0.1), rgba(168,85,247,0.08));
+            padding: 22px 22px 18px; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 14px;
+        }
+        .profile-dropdown-avatar {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--lime), #a8e63d);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 800; color: var(--ink);
+            flex-shrink: 0; border: 2px solid rgba(202,255,76,0.4);
+        }
+        .profile-dropdown-info { flex: 1; min-width: 0; }
+        .profile-dropdown-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem; color: var(--text); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .profile-dropdown-roll { font-size: 0.72rem; color: var(--lime); font-weight: 600; letter-spacing: 0.5px; margin-bottom: 2px; }
+        .profile-dropdown-prog { font-size: 0.7rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .profile-dropdown-body { padding: 14px 22px 18px; display: grid; gap: 10px; }
+        .profile-dropdown-row { display: flex; align-items: center; gap: 10px; font-size: 0.78rem; color: var(--muted); }
+        .profile-dropdown-row span:first-child { font-size: 0.9rem; }
+        .profile-dropdown-row a { color: var(--muted); text-decoration: none; }
+        .profile-dropdown-row a:hover { color: var(--lime); }
+        .profile-dropdown-footer { padding: 12px 22px; border-top: 1px solid var(--border); }
+        .profile-logout { width: 100%; padding: 9px; background: rgba(255,92,92,0.08); border: 1px solid rgba(255,92,92,0.2); border-radius: 10px; color: var(--coral); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.78rem; cursor: none; transition: all 0.25s ease; letter-spacing: 0.5px; }
+        .profile-logout:hover { background: rgba(255,92,92,0.15); }
+
+        /* HERO */
+        #home { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 120px 40px 80px; position: relative; z-index: 2; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(202,255,76,0.12); border: 1px solid rgba(202,255,76,0.3); color: var(--lime); font-size: 0.78rem; font-weight: 600; padding: 6px 16px; border-radius: 50px; margin-bottom: 28px; letter-spacing: 1.5px; text-transform: uppercase; animation: fadeSlideUp 0.7s ease both; }
+        .hero-badge-dot { width: 8px; height: 8px; background: var(--lime); border-radius: 50%; animation: pulse 2s ease infinite; }
+        @keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:0.6} }
+        h1.hero-title { font-family: 'Syne', sans-serif; font-size: clamp(3rem,8vw,7rem); font-weight: 800; line-height: 1; letter-spacing: -3px; animation: fadeSlideUp 0.8s 0.1s ease both; }
+        .hero-title .accent { color: var(--lime); position: relative; display: inline-block; }
+        .hero-title .accent::after { content: ''; position: absolute; bottom: 4px; left: 0; right: 0; height: 4px; background: var(--lime); border-radius: 2px; transform: scaleX(0); transform-origin: left; animation: underlineReveal 0.6s 1.2s ease forwards; }
+        @keyframes underlineReveal { to { transform: scaleX(1); } }
+        .hero-sub { font-size: clamp(1rem,2vw,1.2rem); color: var(--muted); max-width: 540px; margin: 22px auto 40px; line-height: 1.7; font-weight: 300; animation: fadeSlideUp 0.8s 0.2s ease both; }
+        .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; animation: fadeSlideUp 0.8s 0.3s ease both; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 30px; border-radius: 50px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.95rem; text-decoration: none; border: none; cursor: none; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+        .btn-primary { background: var(--lime); color: var(--ink); }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 12px 40px rgba(202,255,76,0.35); }
+        .btn-outline { background: transparent; color: var(--text); border: 1.5px solid var(--border); }
+        .btn-outline:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-3px); background: rgba(255,255,255,0.05); }
+        .btn-ghost { background: rgba(255,255,255,0.05); color: var(--muted); border: 1.5px solid var(--border); }
+        .btn-ghost:hover { color: var(--text); background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+        .hero-stats { display: flex; gap: 50px; justify-content: center; margin-top: 70px; flex-wrap: wrap; animation: fadeSlideUp 0.8s 0.5s ease both; }
+        .stat { text-align: center; }
+        .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; display: block; }
+        .stat-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+        @keyframes fadeSlideUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+        /* MARQUEE */
+        .marquee-strip { background: var(--lime); padding: 12px 0; overflow: hidden; position: relative; z-index: 3; }
+        .marquee-inner { display: flex; white-space: nowrap; animation: marquee 22s linear infinite; }
+        .marquee-item { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.85rem; color: var(--ink); text-transform: uppercase; letter-spacing: 2px; padding: 0 24px; }
+        .marquee-sep { color: rgba(13,13,20,0.4); padding: 0 4px; }
+        @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+        /* SECTION SHARED */
+        .section-wrap { position: relative; z-index: 2; padding: 100px 40px; max-width: 1280px; margin: 0 auto; }
+        .section-bg { background: var(--ink2); position: relative; z-index: 2; }
+        .section-label { font-size: 0.72rem; font-weight: 700; color: var(--lime); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+        .section-label::before { content: ''; width: 28px; height: 2px; background: var(--lime); }
+        h2.section-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem,4vw,3.2rem); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 16px; }
+        .section-desc { color: var(--muted); font-size: 1rem; max-width: 480px; line-height: 1.7; margin-bottom: 50px; }
+
+        /* VIDEO TABS */
+        .video-tab-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
+        .video-tab { display: inline-flex; align-items: center; gap: 7px; padding: 9px 20px; border-radius: 50px; font-size: 0.83rem; font-weight: 600; border: 1.5px solid var(--border); background: transparent; color: var(--muted); cursor: none; transition: all 0.25s ease; }
+        .video-tab.active { background: var(--lime); color: var(--ink); border-color: var(--lime); }
+        .video-tab:hover:not(.active) { border-color: rgba(202,255,76,0.3); color: var(--text); }
+        .video-tab .tab-count { background: rgba(0,0,0,0.2); border-radius: 50px; padding: 1px 7px; font-size: 0.7rem; font-weight: 800; }
+        .video-tab.active .tab-count { background: rgba(0,0,0,0.25); }
+
+        /* LOCKED OVERLAY */
+        .lock-banner {
+            background: linear-gradient(135deg, rgba(168,85,247,0.15), rgba(61,204,255,0.1));
+            border: 1px solid rgba(168,85,247,0.3);
+            border-radius: 16px; padding: 28px 36px;
+            display: flex; align-items: center; justify-content: space-between; gap: 20px;
+            margin-top: 40px; flex-wrap: wrap;
+        }
+        .lock-banner-left { display: flex; align-items: center; gap: 16px; }
+        .lock-icon { font-size: 2rem; }
+        .lock-banner h3 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; margin-bottom: 4px; }
+        .lock-banner p { color: var(--muted); font-size: 0.85rem; }
+        .lock-banner .btn-primary { padding: 11px 24px; font-size: 0.87rem; white-space: nowrap; }
+
+        /* VIDEO GRID */
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
+        .video-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: all 0.4s cubic-bezier(0.34,1.2,0.64,1); position: relative; }
+        .video-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 50%, rgba(202,255,76,0.04)); opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 1; }
+        .video-card:hover { transform: translateY(-8px); border-color: rgba(202,255,76,0.25); box-shadow: 0 24px 60px rgba(0,0,0,0.4); }
+        .video-card:hover::before { opacity: 1; }
+        .video-tag { position: absolute; top: 12px; left: 12px; z-index: 10; background: var(--lime); color: var(--ink); font-size: 0.63rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 50px; }
+        .video-thumb { width: 100%; aspect-ratio: 16/9; border: none; display: block; }
+        .video-info { padding: 18px 20px 20px; }
+        .video-info h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.97rem; margin-bottom: 7px; line-height: 1.35; }
+        .video-info p { color: var(--muted); font-size: 0.82rem; line-height: 1.6; }
+        .video-meta { display: flex; gap: 14px; margin-top: 12px; font-size: 0.73rem; color: var(--muted); }
+
+        /* AUDIO */
+        .audio-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap: 20px; }
+        .audio-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; transition: all 0.35s ease; position: relative; overflow: hidden; }
+        .audio-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--sky), var(--violet)); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+        .audio-card:hover { transform: translateY(-5px); border-color: rgba(61,204,255,0.25); }
+        .audio-card:hover::after { transform: scaleX(1); }
+        .audio-icon { width: 52px; height: 52px; background: linear-gradient(135deg,var(--sky),var(--violet)); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 18px; }
+        .audio-card h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+        .audio-card p { color: var(--muted); font-size: 0.83rem; line-height: 1.6; margin-bottom: 18px; }
+        audio { width: 100%; accent-color: var(--lime); border-radius: 50px; }
+
+        /* VIDEO IFRAME FALLBACK */
+        .video-thumb-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: var(--ink3); overflow: hidden; }
+        .video-thumb { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block; }
+        .video-fallback { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg,var(--ink3),#12121c); color: var(--muted); font-size: 0.82rem; text-align: center; padding: 20px; }
+        .video-fallback .vf-icon { font-size: 2.2rem; }
+        .video-fallback p { max-width: 200px; line-height: 1.5; }
+        .video-fallback a { color: var(--lime); font-weight: 700; font-size: 0.83rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border: 1.5px solid rgba(202,255,76,0.3); border-radius: 50px; margin-top: 4px; transition: all 0.25s ease; }
+        .video-fallback a:hover { background: rgba(202,255,76,0.1); }
+
+        /* AUDIO LOCK BANNER */
+        .audio-lock-banner { background: linear-gradient(135deg,rgba(168,85,247,0.12),rgba(61,204,255,0.08)); border: 1px solid rgba(168,85,247,0.25); border-radius: 16px; padding: 24px 30px; display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 36px; flex-wrap: wrap; }
+        .audio-lock-banner h3 { font-family: 'Syne',sans-serif; font-weight: 800; font-size: 1rem; margin-bottom: 4px; }
+        .audio-lock-banner p { color: var(--muted); font-size: 0.83rem; }
+
+        /* ── BENEFITS / COMPARISON SECTION ── */
+        .compare-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .compare-card {
+            border-radius: 22px; padding: 36px; border: 1px solid var(--border);
+            position: relative; overflow: hidden;
+        }
+        .compare-card.guest-card { background: var(--card); }
+        .compare-card.reg-card {
+            background: linear-gradient(145deg, rgba(202,255,76,0.07), rgba(168,85,247,0.06));
+            border-color: rgba(202,255,76,0.2);
+        }
+        .compare-card.reg-card::before {
+            content: 'BEST'; position: absolute; top: 20px; right: -24px;
+            background: var(--lime); color: var(--ink); font-size: 0.62rem; font-weight: 800;
+            letter-spacing: 2px; padding: 4px 30px; transform: rotate(45deg);
+        }
+        .compare-header { margin-bottom: 28px; }
+        .compare-icon { font-size: 2.2rem; margin-bottom: 14px; display: block; }
+        .compare-header h3 { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; margin-bottom: 6px; }
+        .compare-header p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+        .compare-list { display: grid; gap: 12px; margin-bottom: 32px; }
+        .compare-item { display: flex; align-items: flex-start; gap: 12px; font-size: 0.88rem; line-height: 1.5; }
+        .compare-item .ci-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+        .compare-item.has { color: var(--text); }
+        .compare-item.hasnt { color: var(--muted); text-decoration: line-through; opacity: 0.55; }
+        .compare-cta { width: 100%; padding: 13px; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.9rem; border: none; cursor: none; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+        .compare-cta.guest-cta { background: var(--ink3); color: var(--text); border: 1.5px solid var(--border); }
+        .compare-cta.guest-cta:hover { background: rgba(255,255,255,0.07); transform: translateY(-2px); }
+        .compare-cta.reg-cta { background: var(--lime); color: var(--ink); }
+        .compare-cta.reg-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(202,255,76,0.3); }
+
+        /* QUIZ & TIPS SECTION */
+        .quiz-tips-section { display: none; }
+        body.registered .quiz-tips-section { display: block; }
+        body.registered .benefits-section { display: none; }
+
+        /* Quiz tabs */
+        .quiz-tab-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 36px; }
+        .quiz-tab { padding: 8px 18px; border-radius: 50px; font-size: 0.78rem; font-weight: 700; border: 1.5px solid var(--border); background: transparent; color: var(--muted); cursor: none; transition: all 0.25s ease; letter-spacing: 0.3px; }
+        .quiz-tab.active { background: var(--lime); color: var(--ink); border-color: var(--lime); }
+        .quiz-tab:hover:not(.active) { border-color: rgba(202,255,76,0.3); color: var(--text); }
+
+        /* Quiz panel */
+        .quiz-panel { display: none; }
+        .quiz-panel.active { display: block; }
+        .quiz-header { margin-bottom: 30px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+        .quiz-header-left h3 { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; margin-bottom: 4px; }
+        .quiz-header-left p { color: var(--muted); font-size: 0.83rem; }
+        .quiz-score-badge { background: rgba(202,255,76,0.1); border: 1px solid rgba(202,255,76,0.25); border-radius: 50px; padding: 6px 16px; font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--lime); }
+
+        .quiz-grid { display: grid; gap: 18px; }
+        .quiz-q {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 16px; padding: 24px 26px;
+            transition: border-color 0.3s;
+        }
+        .quiz-q.correct { border-color: rgba(202,255,76,0.5); background: rgba(202,255,76,0.04); }
+        .quiz-q.wrong { border-color: rgba(255,92,92,0.4); background: rgba(255,92,92,0.04); }
+        .quiz-q-num { font-size: 0.68rem; font-weight: 700; color: var(--lime); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+        .quiz-q-text { font-family: 'Syne', sans-serif; font-size: 0.97rem; font-weight: 700; line-height: 1.45; margin-bottom: 18px; }
+        .quiz-options { display: grid; gap: 10px; }
+        .quiz-opt {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 16px; border-radius: 10px;
+            border: 1.5px solid var(--border); background: var(--ink3);
+            cursor: none; transition: all 0.22s ease; font-size: 0.87rem;
+        }
+        .quiz-opt:hover:not(.disabled) { border-color: rgba(202,255,76,0.3); background: rgba(202,255,76,0.05); }
+        .quiz-opt.selected-correct { border-color: var(--lime); background: rgba(202,255,76,0.1); color: var(--lime); font-weight: 600; }
+        .quiz-opt.selected-wrong { border-color: var(--coral); background: rgba(255,92,92,0.1); color: var(--coral); font-weight: 600; }
+        .quiz-opt.reveal-correct { border-color: rgba(202,255,76,0.4); color: rgba(202,255,76,0.7); }
+        .quiz-opt.disabled { pointer-events: none; }
+        .quiz-opt-letter { width: 26px; height: 26px; min-width: 26px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 800; font-family: 'Syne', sans-serif; }
+        .quiz-opt.selected-correct .quiz-opt-letter { background: var(--lime); color: var(--ink); }
+        .quiz-opt.selected-wrong .quiz-opt-letter { background: var(--coral); color: white; }
+        .quiz-explanation { margin-top: 14px; padding: 12px 16px; background: rgba(202,255,76,0.06); border-left: 3px solid var(--lime); border-radius: 0 8px 8px 0; font-size: 0.82rem; color: var(--muted); line-height: 1.6; display: none; }
+        .quiz-explanation.show { display: block; }
+        .quiz-reset-btn { margin-top: 28px; padding: 12px 28px; background: var(--ink3); border: 1.5px solid var(--border); border-radius: 50px; color: var(--muted); font-family: 'Syne', sans-serif; font-size: 0.83rem; font-weight: 700; cursor: none; transition: all 0.25s ease; }
+        .quiz-reset-btn:hover { border-color: rgba(202,255,76,0.3); color: var(--lime); }
+
+        /* TIPS */
+        .tips-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 18px; margin-top: 50px; }
+        .tip-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 16px; padding: 22px 24px;
+            transition: all 0.35s ease; position: relative; overflow: hidden;
+        }
+        .tip-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 3px 3px 0 0; }
+        .tip-card.tip-py::before  { background: linear-gradient(90deg,#3776AB,#FFD43B); }
+        .tip-card.tip-js::before  { background: linear-gradient(90deg,#F7DF1E,#FF5C5C); }
+        .tip-card.tip-web::before { background: linear-gradient(90deg,#E44D26,#264DE4); }
+        .tip-card.tip-cs::before  { background: linear-gradient(90deg,var(--violet),var(--sky)); }
+        .tip-card.tip-react::before { background: linear-gradient(90deg,#61DAFB,#20232A); }
+        .tip-card.tip-node::before  { background: linear-gradient(90deg,#68A063,#3C873A); }
+        .tip-card.tip-git::before   { background: linear-gradient(90deg,#F05032,#DE4C36); }
+        .tip-card.tip-ml::before    { background: linear-gradient(90deg,#FF6B35,var(--violet)); }
+        .tip-card.tip-sql::before   { background: linear-gradient(90deg,#4DB6AC,#00695C); }
+        .tip-card.tip-css::before   { background: linear-gradient(90deg,#264DE4,#2965F1); }
+        .tip-card:hover { transform: translateY(-5px); border-color: rgba(202,255,76,0.2); }
+        .tip-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.65rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 50px; background: rgba(255,255,255,0.07); color: var(--muted); margin-bottom: 12px; }
+        .tip-icon { font-size: 1.4rem; margin-bottom: 10px; display: block; }
+        .tip-card h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.92rem; margin-bottom: 8px; color: var(--text); }
+        .tip-card p { color: var(--muted); font-size: 0.81rem; line-height: 1.65; }
+        .tip-card code { background: var(--ink3); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; font-size: 0.78rem; color: var(--lime); font-family: monospace; }
+
+        /* ABOUT */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .about-features { display: grid; gap: 18px; margin-top: 40px; }
+        .feature-item { display: flex; gap: 16px; align-items: flex-start; padding: 20px; background: var(--card); border: 1px solid var(--border); border-radius: 14px; transition: all 0.3s ease; }
+        .feature-item:hover { border-color: rgba(202,255,76,0.2); transform: translateX(6px); }
+        .feature-icon { width: 44px; height: 44px; min-width: 44px; background: linear-gradient(135deg,rgba(202,255,76,0.15),rgba(202,255,76,0.05)); border: 1px solid rgba(202,255,76,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .feature-item h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+        .feature-item p { color: var(--muted); font-size: 0.83rem; line-height: 1.5; }
+        .about-card-stack { position: relative; height: 380px; }
+        .stack-card { position: absolute; border-radius: 20px; padding: 28px; border: 1px solid var(--border); }
+        .stack-card-1 { background: linear-gradient(135deg,var(--violet),#6f28d4); width: 85%; top: 0; left: 0; transform: rotate(-3deg); animation: floatA 6s ease-in-out infinite; }
+        .stack-card-2 { background: linear-gradient(135deg,var(--sky),#0099cc); width: 85%; top: 40px; right: 0; transform: rotate(2deg); animation: floatB 7s ease-in-out infinite; }
+        .stack-card-3 { background: var(--card); border-color: rgba(202,255,76,0.3); width: 90%; bottom: 20px; left: 5%; animation: floatC 5s ease-in-out infinite; }
+        @keyframes floatA { 0%,100%{transform:rotate(-3deg) translateY(0)} 50%{transform:rotate(-3deg) translateY(-12px)} }
+        @keyframes floatB { 0%,100%{transform:rotate(2deg) translateY(0)} 50%{transform:rotate(2deg) translateY(-8px)} }
+        @keyframes floatC { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-15px)} }
+        .stack-card .card-label { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; opacity: 0.7; }
+        .stack-card .card-num { font-family: 'Syne', sans-serif; font-size: 2.4rem; font-weight: 800; margin-bottom: 4px; }
+        .stack-card p { font-size: 0.85rem; line-height: 1.5; color: rgba(255,255,255,0.85); }
+
+        /* CONTACT */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 60px; align-items: start; }
+        .contact-info { display: grid; gap: 14px; }
+        .contact-item { display: flex; gap: 14px; align-items: center; padding: 18px 22px; background: var(--card); border: 1px solid var(--border); border-radius: 14px; transition: all 0.3s ease; }
+        .contact-item:hover { border-color: rgba(202,255,76,0.2); transform: translateX(4px); }
+        .contact-item-icon { width: 44px; height: 44px; min-width: 44px; background: rgba(202,255,76,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .contact-item h4 { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+        .contact-item p, .contact-item a { font-size: 0.9rem; color: var(--text); text-decoration: none; }
+        .contact-item a:hover { color: var(--lime); }
+        .contact-form { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 36px; }
+        .contact-form h3 { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; }
+        .form-subtitle { color: var(--muted); font-size: 0.87rem; margin-bottom: 28px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+        .form-group input,.form-group select,.form-group textarea { width: 100%; padding: 12px 16px; background: var(--ink3); border: 1.5px solid var(--border); border-radius: 10px; color: var(--text); font-family: 'DM Sans',sans-serif; font-size: 0.9rem; transition: all 0.25s ease; outline: none; cursor: none; }
+        .form-group input:focus,.form-group select:focus,.form-group textarea:focus { border-color: var(--lime); box-shadow: 0 0 0 3px rgba(202,255,76,0.12); }
+        .form-group textarea { resize: vertical; min-height: 110px; }
+        .form-group select option { background: var(--ink2); }
+        .radio-group { display: flex; gap: 20px; margin-top: 6px; }
+        .radio-label { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--text); cursor: none; }
+        .radio-label input[type="radio"] { accent-color: var(--lime); cursor: none; }
+        .checkbox-label { display: flex; align-items: center; gap: 10px; font-size: 0.87rem; color: var(--muted); cursor: none; }
+        .checkbox-label input[type="checkbox"] { accent-color: var(--lime); width: 16px; height: 16px; cursor: none; }
+        .btn-submit { width: 100%; padding: 14px; background: var(--lime); color: var(--ink); border: none; border-radius: 12px; font-family: 'Syne',sans-serif; font-weight: 800; font-size: 0.95rem; cursor: none; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); margin-top: 8px; }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(202,255,76,0.3); background: #d8ff6a; }
+
+        /* FOOTER */
+        footer { position: relative; z-index: 2; background: var(--ink); border-top: 1px solid var(--border); padding: 50px 40px 30px; text-align: center; }
+        .footer-logo { font-family: 'Syne',sans-serif; font-size: 2rem; font-weight: 800; color: var(--lime); letter-spacing: -1px; margin-bottom: 10px; }
+        .footer-logo span { color: var(--text); }
+        .footer-links { display: flex; gap: 24px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+        .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--lime); }
+        .footer-copy { color: var(--muted); font-size: 0.8rem; margin-top: 20px; }
+
+        /* MODAL */
+        .modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.8); backdrop-filter: blur(18px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .modal-overlay.open { opacity: 1; pointer-events: all; }
+        .modal { background: var(--ink2); border: 1px solid var(--border); border-radius: 24px; width: 100%; max-width: 640px; max-height: 90vh; overflow-y: auto; padding: 42px; transform: translateY(40px) scale(0.96); transition: all 0.45s cubic-bezier(0.34,1.2,0.64,1); position: relative; }
+        .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+        .modal::-webkit-scrollbar { width: 5px; }
+        .modal::-webkit-scrollbar-track { background: var(--ink3); }
+        .modal::-webkit-scrollbar-thumb { background: var(--border); border-radius: 50px; }
+        .modal-close { position: absolute; top: 18px; right: 18px; width: 36px; height: 36px; background: var(--ink3); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: none; font-size: 1rem; color: var(--muted); transition: all 0.25s ease; }
+        .modal-close:hover { background: var(--coral); color: white; border-color: var(--coral); }
+        .modal-header { margin-bottom: 32px; }
+        .modal-badge { display: inline-flex; align-items: center; gap: 7px; background: rgba(202,255,76,0.1); border: 1px solid rgba(202,255,76,0.25); color: var(--lime); font-size: 0.72rem; font-weight: 700; padding: 5px 14px; border-radius: 50px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 14px; }
+        .modal-header h2 { font-family: 'Syne',sans-serif; font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; line-height: 1.15; margin-bottom: 8px; }
+        .modal-header p { color: var(--muted); font-size: 0.87rem; line-height: 1.6; }
+        .photo-upload { display: flex; align-items: center; gap: 20px; margin-bottom: 24px; padding: 20px; background: var(--ink3); border: 2px dashed var(--border); border-radius: 14px; cursor: none; transition: all 0.3s ease; }
+        .photo-upload:hover { border-color: rgba(202,255,76,0.4); }
+        .photo-preview { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg,var(--violet),var(--sky)); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; overflow: hidden; flex-shrink: 0; }
+        .photo-preview img { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .photo-upload-info h4 { font-family: 'Syne',sans-serif; font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+        .photo-upload-info p { color: var(--muted); font-size: 0.78rem; }
+        .photo-upload-btn { margin-top: 8px; padding: 6px 16px; background: rgba(202,255,76,0.12); border: 1px solid rgba(202,255,76,0.25); color: var(--lime); border-radius: 50px; font-size: 0.78rem; font-weight: 600; cursor: none; transition: all 0.25s ease; }
+        .photo-upload-btn:hover { background: rgba(202,255,76,0.22); }
+        .modal-divider { height: 1px; background: var(--border); margin: 6px 0 24px; }
+        .modal-section-title { font-family: 'Syne',sans-serif; font-size: 0.72rem; font-weight: 700; color: var(--lime); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+        .modal-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .strength-bar { height: 4px; background: var(--ink3); border-radius: 2px; overflow: hidden; margin-top: 8px; }
+        .strength-fill { height: 100%; border-radius: 2px; width: 0; transition: all 0.4s ease; }
+        .strength-text { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
+        .terms-check { display: flex; align-items: flex-start; gap: 10px; font-size: 0.83rem; color: var(--muted); line-height: 1.5; margin: 20px 0 24px; }
+        .terms-check input { accent-color: var(--lime); width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; cursor: none; }
+        .terms-check a { color: var(--lime); text-decoration: none; }
+        .btn-register { width: 100%; padding: 15px; background: linear-gradient(135deg,var(--lime),#a8e63d); color: var(--ink); border: none; border-radius: 14px; font-family: 'Syne',sans-serif; font-weight: 800; font-size: 1rem; cursor: none; letter-spacing: 0.5px; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+        .btn-register:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(202,255,76,0.35); }
+        .modal-tabs { display: flex; background: var(--ink3); border-radius: 12px; padding: 4px; margin-bottom: 28px; gap: 4px; }
+        .modal-tab-btn { flex: 1; padding: 10px; border-radius: 9px; border: none; background: transparent; color: var(--muted); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.82rem; cursor: none; transition: all 0.25s ease; letter-spacing: 0.3px; }
+        .modal-tab-btn.active { background: var(--card); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        .modal-tab-btn.active.reg-tab { color: var(--lime); }
+        .modal-tab-btn.active.login-tab { color: var(--sky); }
+        .modal-panel { display: none; }
+        .modal-panel.active { display: block; }
+        .signin-icon { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--sky), var(--violet)); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin: 0 auto 20px; }
+        .signin-header { text-align: center; margin-bottom: 28px; }
+        .signin-header h2 { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 6px; }
+        .signin-header p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+        .signin-error { background: rgba(255,92,92,0.1); border: 1px solid rgba(255,92,92,0.3); border-radius: 10px; padding: 11px 16px; font-size: 0.83rem; color: var(--coral); margin-bottom: 16px; display: none; }
+        .signin-error.show { display: block; }
+        .btn-signin { width: 100%; padding: 15px; background: linear-gradient(135deg, var(--sky), #0099cc); color: var(--ink); border: none; border-radius: 14px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; cursor: none; letter-spacing: 0.5px; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+        .btn-signin:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(61,204,255,0.3); }
+        .modal-switch { text-align: center; margin-top: 18px; font-size: 0.85rem; color: var(--muted); }
+        .modal-switch a { color: var(--lime); text-decoration: none; font-weight: 600; cursor: none; }
+        .modal-switch a.sky { color: var(--sky); }
+
+        /* TOAST */
+        .toast { position: fixed; bottom: 30px; right: 30px; z-index: 2000; background: var(--card); border: 1px solid rgba(202,255,76,0.3); border-radius: 16px; padding: 18px 24px; display: flex; align-items: center; gap: 14px; transform: translateX(120%); transition: transform 0.5s cubic-bezier(0.34,1.2,0.64,1); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+        .toast.show { transform: translateX(0); }
+        .toast-icon { font-size: 1.5rem; }
+        .toast-text h4 { font-family: 'Syne',sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
+        .toast-text p { font-size: 0.8rem; color: var(--muted); }
+
+        /* SCROLL REVEAL */
+        .reveal { opacity: 0; transform: translateY(35px); transition: all 0.7s cubic-bezier(0.16,1,0.3,1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-d1 { transition-delay: 0.1s; } .reveal-d2 { transition-delay: 0.2s; } .reveal-d3 { transition-delay: 0.3s; }
+
+        /* RESPONSIVE */
+        @media (max-width: 960px) {
+            nav { padding: 16px 24px; }
+            .nav-links { display: none; }
+            .section-wrap { padding: 70px 24px; }
+            .about-grid,.contact-grid,.compare-wrap { grid-template-columns: 1fr; }
+            .about-visual { display: none; }
+            .modal { padding: 28px 20px; }
+            h1.hero-title { letter-spacing: -2px; }
+        }
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+            .hero-stats { gap: 28px; }
+            .video-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── CROSSHAIR CURSOR ── -->
+<div id="crosshair">
+    <div class="ch-h"></div>
+    <div class="ch-v"></div>
+    <div class="ch-dot"></div>
+    <div class="ch-ring"></div>
+</div>
+
+<!-- Blobs -->
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<!-- ── MODAL: REGISTER + SIGN IN ── -->
+<div class="modal-overlay" id="regModal">
+    <div class="modal">
+        <button class="modal-close" id="closeModal">✕</button>
+
+        <!-- TAB SWITCHER -->
+        <div class="modal-tabs">
+            <button class="modal-tab-btn reg-tab active" id="tabBtnReg" onclick="switchModalTab('register')">✦ Create Account</button>
+            <button class="modal-tab-btn login-tab" id="tabBtnLogin" onclick="switchModalTab('login')">→ Sign In</button>
+        </div>
+
+        <!-- REGISTER PANEL -->
+        <div class="modal-panel active" id="panelRegister">
+            <div class="modal-header">
+                <div class="modal-badge">✦ Join CodeVerse</div>
+                <h2>Create Your<br>Student Account</h2>
+                <p>Unlock unlimited video lectures, audio resources, and exclusive study materials — completely free.</p>
+            </div>
+            <div class="photo-upload" onclick="document.getElementById('photoInput').click()">
+                <div class="photo-preview" id="photoPreview">
+                    <img id="photoImg" src="" alt="">
+                    <span id="photoEmoji">🎓</span>
+                </div>
+                <div class="photo-upload-info">
+                    <h4>Profile Photo</h4>
+                    <p>JPG, PNG or GIF · Max 5MB</p>
+                    <button class="photo-upload-btn" onclick="event.stopPropagation();document.getElementById('photoInput').click()">Upload Photo</button>
+                </div>
+            </div>
+            <input type="file" id="photoInput" accept="image/*" style="display:none">
+            <div class="modal-section-title">Personal Info</div>
+            <div class="form-row">
+                <div class="form-group"><label>First Name</label><input type="text" id="reg-fname" placeholder="Ali"></div>
+                <div class="form-group"><label>Last Name</label><input type="text" id="reg-lname" placeholder="Hassan"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Email Address</label><input type="email" id="reg-email" placeholder="ali@uitu.edu.pk"></div>
+                <div class="form-group"><label>Phone Number</label><input type="tel" id="reg-phone" placeholder="+92-300-0000000"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Date of Birth</label><input type="date" id="reg-dob"></div>
+                <div class="form-group"><label>Student ID / Roll No.</label><input type="text" id="reg-sid" placeholder="BSCS-2024-001"></div>
+            </div>
+            <div class="form-group">
+                <label>Program / Department</label>
+                <select id="reg-dept">
+                    <option value="">Select your program</option>
+                    <option>BS Computer Science</option>
+                    <option>BS Information Technology</option>
+                    <option>BS Software Engineering</option>
+                    <option>BS Artificial Intelligence</option>
+                    <option>BS Cybersecurity</option>
+                    <option>MS Computer Science</option>
+                    <option>PhD Computer Science</option>
+                </select>
+            </div>
+            <div class="modal-divider"></div>
+            <div class="modal-section-title">Security</div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="reg-pass" placeholder="Create a strong password" oninput="checkStrength(this.value)">
+                <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+                <p class="strength-text" id="strengthText">Enter a password</p>
+            </div>
+            <div class="form-group"><label>Confirm Password</label><input type="password" id="reg-pass2" placeholder="Repeat your password"></div>
+            <label class="terms-check">
+                <input type="checkbox" id="reg-terms">
+                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a> of UIT University CodeVerse Platform.
+            </label>
+            <button class="btn-register" onclick="handleRegister()">Create My Account →</button>
+            <p class="modal-switch">Already enrolled? <a class="sky" href="#" onclick="switchModalTab('login');return false;">Sign in here</a></p>
+        </div>
+
+        <!-- SIGN IN PANEL -->
+        <div class="modal-panel" id="panelLogin">
+            <div class="signin-header">
+                <div class="signin-icon">👋</div>
+                <h2>Welcome Back</h2>
+                <p>Sign in to your CodeVerse account to access your full library, quizzes and progress.</p>
+            </div>
+            <div class="signin-error" id="signinError">Incorrect email or password. Please try again.</div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="si-email" placeholder="ali@uitu.edu.pk">
+            </div>
+            <div class="form-group" style="margin-bottom:6px;">
+                <label>Password</label>
+                <input type="password" id="si-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')handleSignIn()">
+            </div>
+            <div style="text-align:right;margin-bottom:22px;">
+                <a href="#" style="font-size:0.78rem;color:var(--muted);text-decoration:none;" onclick="return false;">Forgot password?</a>
+            </div>
+            <button class="btn-signin" onclick="handleSignIn()">Sign In →</button>
+            <p class="modal-switch">New to CodeVerse? <a href="#" onclick="switchModalTab('register');return false;">Create a free account</a></p>
+        </div>
+
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+    <div class="toast-icon">🎉</div>
+    <div class="toast-text"><h4 id="toast-title">Welcome!</h4><p id="toast-body">Account created.</p></div>
+</div>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+    <a href="#home" class="nav-logo">Code<span>Verse</span></a>
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#videos">Lectures</a>
+        <a href="#audio">Audio</a>
+        <a href="#benefits" id="navBenefits">Benefits</a>
+        <a href="#quiz-tips" id="navQuizTips" style="display:none;">🧠 Quizzes</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="#" class="nav-links-item nav-guest" onclick="enterGuest(event)">👀 Guest</a>
+        <a href="#" class="nav-signin" onclick="openSignIn(event)" style="color:var(--muted);text-decoration:none;font-size:0.85rem;font-weight:500;padding:7px 15px;border-radius:50px;border:1.5px solid var(--border);transition:all 0.25s ease;" onmouseover="this.style.color='var(--sky)';this.style.borderColor='rgba(61,204,255,0.4)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor='var(--border)'">Sign In</a>
+        <a href="#" class="nav-cta" onclick="openModal(event)">Register Free</a>
+        <div class="profile-wrap" id="profileWrap">
+            <div class="profile-trigger" id="profileTrigger" onclick="toggleProfile()">
+                <div class="profile-avatar" id="profileAvatar">A</div>
+                <div class="profile-trigger-text">
+                    <span class="profile-trigger-name" id="profileName">Ali Hassan</span>
+                    <span class="profile-trigger-roll" id="profileRoll">BSCS-2024-001</span>
+                </div>
+            </div>
+            <div class="profile-dropdown" id="profileDropdown">
+                <div class="profile-dropdown-header">
+                    <div class="profile-dropdown-avatar" id="profileAvatarLg">A</div>
+                    <div class="profile-dropdown-info">
+                        <div class="profile-dropdown-name" id="profileNameLg">Ali Hassan</div>
+                        <div class="profile-dropdown-roll" id="profileRollLg">BSCS-2024-001</div>
+                        <div class="profile-dropdown-prog" id="profileProgLg">BS Computer Science</div>
+                    </div>
+                </div>
+                <div class="profile-dropdown-body">
+                    <div class="profile-dropdown-row"><span>📧</span><a id="profileEmailLg" href="#">ali@uitu.edu.pk</a></div>
+                    <div class="profile-dropdown-row"><span>📱</span><span id="profilePhoneLg">+92-300-0000000</span></div>
+                    <div class="profile-dropdown-row"><span>🎂</span><span id="profileDobLg">—</span></div>
+                    <div class="profile-dropdown-row"><span>✅</span><span style="color:var(--lime);font-weight:600;">Registered Student</span></div>
+                </div>
+                <div class="profile-dropdown-footer">
+                    <button class="profile-logout" onclick="handleLogout()">Sign Out →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="home" style="position:relative;z-index:2;">
+    <div style="max-width:820px;margin:0 auto;">
+        <div class="hero-badge"><div class="hero-badge-dot"></div>UIT University — Karachi, Pakistan</div>
+        <h1 class="hero-title">Learn Without<br><span class="accent">Limits.</span></h1>
+        <p class="hero-sub">CodeVerse is your gateway to world-class tech education. Video lectures, audio content, and interactive resources — all in one vibrant hub.</p>
+        <div class="hero-actions">
+            <a href="#videos" class="btn btn-primary">🎬 Start Learning</a>
+            <a href="#" class="btn btn-outline" onclick="openModal(event)">✦ Register Free</a>
+            <a href="#" class="btn btn-ghost" onclick="enterGuest(event)">👀 Continue as Guest</a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat"><span class="stat-num" style="color:var(--lime);font-size:1.6rem;letter-spacing:-1px;">Unlimited</span><span class="stat-label">Video Lectures</span></div>
+            <div class="stat"><span class="stat-num">5K+</span><span class="stat-label">Active Students</span></div>
+            <div class="stat"><span class="stat-num">20+</span><span class="stat-label">Expert Faculty</span></div>
+            <div class="stat"><span class="stat-num" style="color:var(--lime);font-size:1.6rem;letter-spacing:-1px;">Open Access</span><span class="stat-label">No Fees. Ever.</span></div>
+        </div>
+    </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+    <div class="marquee-inner">
+        <span class="marquee-item">Python</span><span class="marquee-sep"> ✦ </span>
+        <span class="marquee-item">JavaScript</span><span class="marquee-sep"> ✦ </span>
+        <span class="marquee-item">React</span><span class="marquee-sep"> ✦ </span>
+        <span class="marquee-item">Data Structures</span><span class="marquee-sep"> ✦ </span>
+        <span class="marquee-item">Node.js</span><span class="marquee-sep"> ✦ </span>
+        <span class="marquee-item">HTML5 & CSS3</span><span class="marquee-sep"> ✦ </span>
+        <span class="marquee-item">Machine Learning</span><span class="marquee-sep"> ✦ </span>
+        <span class="marquee-item">Git & GitHub</span><span class="marquee-sep"> ✦ </span>
+        <span class="marquee-item">Python</span><span class="marquee-sep"> ✦ </span>
+        <span class="marquee-item">JavaScript</span><span class="marquee-sep"> ✦ </span>
+        <span class="marquee-item">React</span><span class="marquee-sep"> ✦ </span>
+        <span class="marquee-item">Data Structures</span><span class="marquee-sep"> ✦ </span>
+        <span class="marquee-item">Node.js</span><span class="marquee-sep"> ✦ </span>
+        <span class="marquee-item">HTML5 & CSS3</span><span class="marquee-sep"> ✦ </span>
+        <span class="marquee-item">Machine Learning</span><span class="marquee-sep"> ✦ </span>
+        <span class="marquee-item">Git & GitHub</span><span class="marquee-sep"> ✦ </span>
+    </div>
+</div>
+
+<!-- ── VIDEOS ── -->
+<div style="position:relative;z-index:2;">
+<div class="section-wrap" id="videos">
+    <div class="section-label reveal">Video Lectures</div>
+    <h2 class="section-title reveal reveal-d1">Watch. Learn.<br>Level Up. 🎬</h2>
+    <p class="section-desc reveal reveal-d2" id="videosDesc">Handpicked lectures on programming languages, frameworks & computer science — curated for UIT students.</p>
+
+    <!-- Tab bar -->
+    <div class="video-tab-bar reveal reveal-d3" id="videoTabBar">
+        <button class="video-tab active" onclick="setTab('guest')" id="tab-guest">
+            👀 Guest Access <span class="tab-count">4</span>
+        </button>
+        <button class="video-tab" onclick="setTab('registered')" id="tab-reg" id="tabReg">
+            🔐 Full Library <span class="tab-count">10</span>
+        </button>
+    </div>
+
+    <!-- GUEST Videos (4) -->
+    <div id="guestVideos">
+        <div class="video-grid">
+            <div class="video-card reveal reveal-d1">
+                <div class="video-tag">🔥 Popular</div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/rfscVS0vtbw" title="Python Tutorial" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=rfscVS0vtbw" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-info">
+                    <h3>Python Full Course for Beginners</h3>
+                    <p>Learn Python from scratch — variables, functions, OOP, and real projects. The most beginner-friendly language to start with.</p>
+                    <div class="video-meta"><span>🕐 4.5 hrs</span><span>⭐ 4.9</span><span>👥 Beginner</span></div>
+                </div>
+            </div>
+            <div class="video-card reveal reveal-d2">
+                <div class="video-tag" style="background:var(--sky);color:var(--ink);">🌐 Web</div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/UB1O30fR-EE" title="HTML5 Tutorial" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=UB1O30fR-EE" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-info">
+                    <h3>HTML5 and Web Development</h3>
+                    <p>Master HTML5 fundamentals, semantic elements, and modern web development techniques for building responsive websites.</p>
+                    <div class="video-meta"><span>🕐 60 min</span><span>⭐ 4.8</span><span>👥 Beginner</span></div>
+                </div>
+            </div>
+            <div class="video-card reveal reveal-d3">
+                <div class="video-tag" style="background:var(--violet);color:white;">🧠 CS</div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/SzJ46YA_RaA" title="CS Basics" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=SzJ46YA_RaA" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-info">
+                    <h3>Computer Science Fundamentals</h3>
+                    <p>Explore core CS concepts including algorithms, data structures, and computational thinking for aspiring developers.</p>
+                    <div class="video-meta"><span>🕐 52 min</span><span>⭐ 4.9</span><span>👥 Intermediate</span></div>
+                </div>
+            </div>
+            <div class="video-card reveal">
+                <div class="video-tag" style="background:var(--coral);color:white;">⚡ JS</div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/PkZNo7MFNFg" title="JavaScript Tutorial" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=PkZNo7MFNFg" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-info">
+                    <h3>JavaScript Full Course for Beginners</h3>
+                    <p>Learn JavaScript fundamentals — the language of the web. Covers variables, DOM manipulation, events, and modern ES6+ syntax.</p>
+                    <div class="video-meta"><span>🕐 3.5 hrs</span><span>⭐ 4.9</span><span>👥 Beginner</span></div>
+                </div>
+            </div>
+        </div>
+        <!-- Lock banner for guests -->
+        <div class="lock-banner reveal" id="lockBanner">
+            <div class="lock-banner-left">
+                <div class="lock-icon">🔒</div>
+                <div>
+                    <h3>6 More Lectures Waiting For You</h3>
+                    <p>Register for free to unlock the full library — React, Node.js, Git, Machine Learning & more.</p>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="openModal(event)">Unlock All Videos →</button>
+        </div>
+    </div>
+
+    <!-- REGISTERED Videos (all 10) — hidden until registered -->
+    <div id="regVideos" style="display:none;">
+        <div class="video-grid">
+            <!-- 1 -->
+            <div class="video-card reveal reveal-d1">
+                <div class="video-tag">🔥 Popular</div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/rfscVS0vtbw" title="Python" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=rfscVS0vtbw" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-info">
+                    <h3>Python Full Course for Beginners</h3>
+                    <p>Learn Python from scratch — variables, functions, OOP, and real projects.</p>
+                    <div class="video-meta"><span>🕐 4.5 hrs</span><span>⭐ 4.9</span><span>👥 Beginner</span></div>
+                </div>
+            </div>
+            <!-- 2 -->
+            <div class="video-card reveal reveal-d2">
+                <div class="video-tag" style="background:var(--sky);color:var(--ink);">🌐 Web</div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/UB1O30fR-EE" title="HTML5" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=UB1O30fR-EE" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-info">
+                    <h3>HTML5 and Web Development</h3>
+                    <p>Master HTML5 fundamentals, semantic elements, and responsive design techniques.</p>
+                    <div class="video-meta"><span>🕐 60 min</span><span>⭐ 4.8</span><span>👥 Beginner</span></div>
+                </div>
+            </div>
+            <!-- 3 -->
+            <div class="video-card reveal reveal-d3">
+                <div class="video-tag" style="background:var(--violet);color:white;">🧠 CS</div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/SzJ46YA_RaA" title="CS Basics" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=SzJ46YA_RaA" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-info">
+                    <h3>Computer Science Fundamentals</h3>
+                    <p>Core CS concepts — algorithms, data structures, and computational thinking.</p>
+                    <div class="video-meta"><span>🕐 52 min</span><span>⭐ 4.9</span><span>👥 Intermediate</span></div>
+                </div>
+            </div>
+            <!-- 4 -->
+            <div class="video-card reveal">
+                <div class="video-tag" style="background:var(--coral);color:white;">⚡ JS</div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/PkZNo7MFNFg" title="JavaScript" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=PkZNo7MFNFg" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-info">
+                    <h3>JavaScript Full Course for Beginners</h3>
+                    <p>Master JavaScript — DOM manipulation, events, and modern ES6+ syntax.</p>
+                    <div class="video-meta"><span>🕐 3.5 hrs</span><span>⭐ 4.9</span><span>👥 Beginner</span></div>
+                </div>
+            </div>
+            <!-- 5 -->
+            <div class="video-card reveal reveal-d1">
+                <div class="video-tag" style="background:#61DAFB;color:#000;">⚛️ React</div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/bMknfKXIFA8" title="React" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=bMknfKXIFA8" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-info">
+                    <h3>React JS Full Course</h3>
+                    <p>Build modern UIs with React — components, hooks, state management, and real-world projects.</p>
+                    <div class="video-meta"><span>🕐 8 hrs</span><span>⭐ 4.9</span><span>👥 Intermediate</span></div>
+                </div>
+            </div>
+            <!-- 6 -->
+            <div class="video-card reveal reveal-d2">
+                <div class="video-tag" style="background:#68A063;color:white;">🟢 Node</div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/Oe421EPjeBE" title="Node.js" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=Oe421EPjeBE" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-info">
+                    <h3>Node.js and Express Full Course</h3>
+                    <p>Server-side JavaScript with Node.js and Express — REST APIs, routing, and databases.</p>
+                    <div class="video-meta"><span>🕐 8 hrs</span><span>⭐ 4.8</span><span>👥 Intermediate</span></div>
+                </div>
+            </div>
+            <!-- 7 -->
+            <div class="video-card reveal reveal-d3">
+                <div class="video-tag" style="background:#F05032;color:white;">🔀 Git</div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/RGOj5yH7evk" title="Git & GitHub" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=RGOj5yH7evk" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-info">
+                    <h3>Git & GitHub Crash Course</h3>
+                    <p>Master version control — commits, branches, pull requests, and collaborative workflows on GitHub.</p>
+                    <div class="video-meta"><span>🕐 68 min</span><span>⭐ 4.9</span><span>👥 All Levels</span></div>
+                </div>
+            </div>
+            <!-- 8 -->
+            <div class="video-card reveal">
+                <div class="video-tag" style="background:#FF6B35;color:white;">🤖 ML</div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/7eh4d6sabA0" title="Machine Learning" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=7eh4d6sabA0" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-info">
+                    <h3>Machine Learning for Beginners</h3>
+                    <p>Understand supervised & unsupervised learning, neural networks, and practical ML with Python & scikit-learn.</p>
+                    <div class="video-meta"><span>🕐 3 hrs</span><span>⭐ 4.8</span><span>👥 Intermediate</span></div>
+                </div>
+            </div>
+            <!-- 9 -->
+            <div class="video-card reveal reveal-d1">
+                <div class="video-tag" style="background:#4DB6AC;color:white;">🗄️ SQL</div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/HXV3zeQKqGY" title="SQL" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=HXV3zeQKqGY" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-info">
+                    <h3>SQL Full Course for Beginners</h3>
+                    <p>Learn relational databases from scratch — queries, joins, subqueries, indexes, and database design principles.</p>
+                    <div class="video-meta"><span>🕐 4 hrs</span><span>⭐ 4.9</span><span>👥 Beginner</span></div>
+                </div>
+            </div>
+            <!-- 10 -->
+            <div class="video-card reveal reveal-d2">
+                <div class="video-tag" style="background:#2196F3;color:white;">🎨 CSS</div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/1Rs2ND1ryYc" title="CSS" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=1Rs2ND1ryYc" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-info">
+                    <h3>CSS Full Course — Flexbox & Grid</h3>
+                    <p>Complete CSS mastery — selectors, animations, Flexbox layout, CSS Grid, and responsive design patterns.</p>
+                    <div class="video-meta"><span>🕐 11 hrs</span><span>⭐ 4.8</span><span>👥 Beginner</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- ── AUDIO ── -->
+<div class="section-bg" style="position:relative;z-index:2;">
+<div class="section-wrap" id="audio">
+    <div class="section-label reveal">Audio Content</div>
+    <h2 class="section-title reveal reveal-d1">Tune In &amp;<br>Focus Deep. 🎧</h2>
+    <p class="section-desc reveal reveal-d2">High-energy study tracks and brain-boosting audio — handpicked to keep you locked in and levelling up.</p>
+
+    <!-- GUEST AUDIO (3 tracks) -->
+    <div id="guestAudio">
+        <div class="audio-grid">
+            <div class="audio-card reveal reveal-d1">
+                <div class="audio-icon">⚡</div>
+                <h3>Deep Work Ambient Electronic</h3>
+                <p>Pulsing electronic textures built for deep focus — no lyrics, pure flow state. Your brain's favourite coding soundtrack.</p>
+                <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
+            </div>
+            <div class="audio-card reveal reveal-d2">
+                <div class="audio-icon">🔥</div>
+                <h3>Synthwave Focus Drive</h3>
+                <p>Retro-futuristic synth grooves with driving beats — uplifting and energetic, perfect for powering through assignments.</p>
+                <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
+            </div>
+            <div class="audio-card reveal reveal-d3">
+                <div class="audio-icon">🚀</div>
+                <h3>Hyperpop Hustle Mode</h3>
+                <p>High-BPM, punchy electronic beats designed to smash procrastination. Turn it on, tune out distractions, ship the code.</p>
+                <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
+            </div>
+        </div>
+        <!-- Lock banner -->
+        <div class="audio-lock-banner reveal">
+            <div style="display:flex;align-items:center;gap:16px;">
+                <span style="font-size:1.8rem;">🔒</span>
+                <div>
+                    <h3>5 More Tracks Locked</h3>
+                    <p>Register free to unlock the full audio library — Lo-fi, Drum &amp; Bass, Chillstep &amp; more.</p>
+                </div>
+            </div>
+            <button class="btn btn-primary" style="white-space:nowrap;padding:11px 24px;font-size:0.87rem;" onclick="openModal(event)">Unlock All Audio →</button>
+        </div>
+    </div>
+
+    <!-- REGISTERED AUDIO (8 tracks) — unlocked after registration -->
+    <div id="regAudio" style="display:none;">
+        <div class="audio-grid">
+            <div class="audio-card reveal reveal-d1">
+                <div class="audio-icon">⚡</div>
+                <h3>Deep Work Ambient Electronic</h3>
+                <p>Pulsing electronic textures built for deep focus — no lyrics, pure flow state. Your brain's favourite coding soundtrack.</p>
+                <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
+            </div>
+            <div class="audio-card reveal reveal-d2">
+                <div class="audio-icon">🔥</div>
+                <h3>Synthwave Focus Drive</h3>
+                <p>Retro-futuristic synth grooves with driving beats — uplifting and energetic, perfect for powering through assignments.</p>
+                <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
+            </div>
+            <div class="audio-card reveal reveal-d3">
+                <div class="audio-icon">🚀</div>
+                <h3>Hyperpop Hustle Mode</h3>
+                <p>High-BPM, punchy electronic beats designed to smash procrastination. Turn it on, tune out distractions, ship the code.</p>
+                <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
+            </div>
+            <div class="audio-card reveal">
+                <div class="audio-icon">🎛️</div>
+                <h3>Drum &amp; Bass Brain Fuel</h3>
+                <p>Fast-paced DnB rhythms that activate your focus neurons — ideal for intense study sessions and hackathon sprints.</p>
+                <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
+            </div>
+            <div class="audio-card reveal reveal-d1">
+                <div class="audio-icon">🌊</div>
+                <h3>Chillstep Midnight Session</h3>
+                <p>Smooth, melodic chillstep for late-night study sessions — dreamy yet focused, the perfect 2AM coding companion.</p>
+                <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
+            </div>
+            <div class="audio-card reveal reveal-d2">
+                <div class="audio-icon">🎮</div>
+                <h3>Lo-fi Beats to Code To</h3>
+                <p>Mellow lo-fi hip-hop loops — soft enough not to distract, groovy enough to keep you in the zone for hours.</p>
+                <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
+            </div>
+            <div class="audio-card reveal reveal-d3">
+                <div class="audio-icon">🌀</div>
+                <h3>Techno Sprint Mode</h3>
+                <p>Underground techno energy for deadline crunches — relentless, rhythmic, and completely distraction-destroying.</p>
+                <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
+            </div>
+            <div class="audio-card reveal">
+                <div class="audio-icon">☀️</div>
+                <h3>Upbeat Morning Kickstart</h3>
+                <p>Bright, uplifting electronic pop to launch your morning study session with maximum energy and zero excuses.</p>
+                <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- ── BENEFITS / COMPARISON ── -->
+<div class="benefits-section" style="position:relative;z-index:2;" id="benefits">
+<div class="section-wrap">
+    <div class="section-label reveal">Why Register?</div>
+    <h2 class="section-title reveal reveal-d1">Guest vs. Registered.<br>The Difference is Huge. ✦</h2>
+    <p class="section-desc reveal reveal-d2">See exactly what you unlock when you create your free CodeVerse account — takes 60 seconds.</p>
+    <div class="compare-wrap">
+        <!-- GUEST -->
+        <div class="compare-card guest-card reveal reveal-d1">
+            <div class="compare-header">
+                <span class="compare-icon">👀</span>
+                <h3>Guest Access</h3>
+                <p>Browse with no sign-up — but you'll hit walls quickly. Great for a quick look around.</p>
+            </div>
+            <div class="compare-list">
+                <div class="compare-item has"><span class="ci-icon">✅</span> Access to 4 starter video lectures</div>
+                <div class="compare-item has"><span class="ci-icon">✅</span> 3 audio study tracks</div>
+                <div class="compare-item has"><span class="ci-icon">✅</span> View course descriptions</div>
+                <div class="compare-item hasnt"><span class="ci-icon">🚫</span> Unlimited video library locked</div>
+                <div class="compare-item hasnt"><span class="ci-icon">🚫</span> No progress tracking</div>
+                <div class="compare-item hasnt"><span class="ci-icon">🚫</span> No certificate of completion</div>
+                <div class="compare-item hasnt"><span class="ci-icon">🚫</span> No faculty Q&amp;A access</div>
+                <div class="compare-item hasnt"><span class="ci-icon">🚫</span> No course bookmarks</div>
+                <div class="compare-item hasnt"><span class="ci-icon">🚫</span> No personalised recommendations</div>
+                <div class="compare-item hasnt"><span class="ci-icon">🚫</span> No access to future content drops</div>
+            </div>
+            <button class="compare-cta guest-cta" onclick="enterGuest(event)">Continue as Guest →</button>
+        </div>
+        <!-- REGISTERED -->
+        <div class="compare-card reg-card reveal reveal-d2">
+            <div class="compare-header">
+                <span class="compare-icon">🎓</span>
+                <h3>Registered Student</h3>
+                <p>Your full, personalised, unlimited learning experience — free forever, zero ads.</p>
+            </div>
+            <div class="compare-list">
+                <div class="compare-item has"><span class="ci-icon">✅</span> Unlimited video lectures unlocked</div>
+                <div class="compare-item has"><span class="ci-icon">✅</span> Unlimited audio study tracks</div>
+                <div class="compare-item has"><span class="ci-icon">✅</span> Progress tracking dashboard</div>
+                <div class="compare-item has"><span class="ci-icon">✅</span> Certificate of completion</div>
+                <div class="compare-item has"><span class="ci-icon">✅</span> Direct faculty Q&amp;A access</div>
+                <div class="compare-item has"><span class="ci-icon">✅</span> Course bookmarks &amp; notes</div>
+                <div class="compare-item has"><span class="ci-icon">✅</span> AI-personalised recommendations</div>
+                <div class="compare-item has"><span class="ci-icon">✅</span> Early access to new content drops</div>
+                <div class="compare-item has"><span class="ci-icon">✅</span> UIT community &amp; peer groups</div>
+                <div class="compare-item has"><span class="ci-icon">✅</span> Download resources &amp; notes PDFs</div>
+            </div>
+            <button class="compare-cta reg-cta" onclick="openModal(event)">Register Free — It's 60 Seconds →</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- ── QUIZZES & TIPS (registered only) ── -->
+<div class="quiz-tips-section section-bg" style="position:relative;z-index:2;" id="quiz-tips">
+<div class="section-wrap">
+    <div class="section-label reveal">Test Yourself</div>
+    <h2 class="section-title reveal reveal-d1">Quizzes &amp;<br>Pro Tips. 🧠</h2>
+    <p class="section-desc reveal reveal-d2">Reinforce what you've learned. Pick a topic, answer the questions, then level up with expert tips curated from each lecture.</p>
+
+    <!-- QUIZ TAB BAR -->
+    <div class="quiz-tab-bar reveal reveal-d3" id="quizTabBar">
+        <button class="quiz-tab active" onclick="setQuizTab('python')">🐍 Python</button>
+        <button class="quiz-tab" onclick="setQuizTab('html')">🌐 HTML5</button>
+        <button class="quiz-tab" onclick="setQuizTab('cs')">🧠 CS Basics</button>
+        <button class="quiz-tab" onclick="setQuizTab('js')">⚡ JavaScript</button>
+        <button class="quiz-tab" onclick="setQuizTab('react')">⚛️ React</button>
+        <button class="quiz-tab" onclick="setQuizTab('node')">🟢 Node.js</button>
+        <button class="quiz-tab" onclick="setQuizTab('git')">🔀 Git</button>
+        <button class="quiz-tab" onclick="setQuizTab('ml')">🤖 ML</button>
+        <button class="quiz-tab" onclick="setQuizTab('sql')">🗄️ SQL</button>
+        <button class="quiz-tab" onclick="setQuizTab('css')">🎨 CSS</button>
+    </div>
+
+    <!-- PYTHON QUIZ -->
+    <div class="quiz-panel active" id="quiz-python">
+        <div class="quiz-header">
+            <div class="quiz-header-left"><h3>🐍 Python Fundamentals</h3><p>Based on: Python Full Course for Beginners</p></div>
+            <div class="quiz-score-badge" id="score-python">Score: 0 / 5</div>
+        </div>
+        <div class="quiz-grid" id="qgrid-python"></div>
+        <button class="quiz-reset-btn" onclick="resetQuiz('python')">↺ Retake Quiz</button>
+    </div>
+    <!-- HTML QUIZ -->
+    <div class="quiz-panel" id="quiz-html">
+        <div class="quiz-header">
+            <div class="quiz-header-left"><h3>🌐 HTML5 Essentials</h3><p>Based on: HTML5 and Web Development</p></div>
+            <div class="quiz-score-badge" id="score-html">Score: 0 / 5</div>
+        </div>
+        <div class="quiz-grid" id="qgrid-html"></div>
+        <button class="quiz-reset-btn" onclick="resetQuiz('html')">↺ Retake Quiz</button>
+    </div>
+    <!-- CS QUIZ -->
+    <div class="quiz-panel" id="quiz-cs">
+        <div class="quiz-header">
+            <div class="quiz-header-left"><h3>🧠 CS Fundamentals</h3><p>Based on: Computer Science Fundamentals</p></div>
+            <div class="quiz-score-badge" id="score-cs">Score: 0 / 5</div>
+        </div>
+        <div class="quiz-grid" id="qgrid-cs"></div>
+        <button class="quiz-reset-btn" onclick="resetQuiz('cs')">↺ Retake Quiz</button>
+    </div>
+    <!-- JS QUIZ -->
+    <div class="quiz-panel" id="quiz-js">
+        <div class="quiz-header">
+            <div class="quiz-header-left"><h3>⚡ JavaScript Core</h3><p>Based on: JavaScript Full Course for Beginners</p></div>
+            <div class="quiz-score-badge" id="score-js">Score: 0 / 5</div>
+        </div>
+        <div class="quiz-grid" id="qgrid-js"></div>
+        <button class="quiz-reset-btn" onclick="resetQuiz('js')">↺ Retake Quiz</button>
+    </div>
+    <!-- REACT QUIZ -->
+    <div class="quiz-panel" id="quiz-react">
+        <div class="quiz-header">
+            <div class="quiz-header-left"><h3>⚛️ React JS</h3><p>Based on: React JS Full Course</p></div>
+            <div class="quiz-score-badge" id="score-react">Score: 0 / 5</div>
+        </div>
+        <div class="quiz-grid" id="qgrid-react"></div>
+        <button class="quiz-reset-btn" onclick="resetQuiz('react')">↺ Retake Quiz</button>
+    </div>
+    <!-- NODE QUIZ -->
+    <div class="quiz-panel" id="quiz-node">
+        <div class="quiz-header">
+            <div class="quiz-header-left"><h3>🟢 Node.js &amp; Express</h3><p>Based on: Node.js and Express Full Course</p></div>
+            <div class="quiz-score-badge" id="score-node">Score: 0 / 5</div>
+        </div>
+        <div class="quiz-grid" id="qgrid-node"></div>
+        <button class="quiz-reset-btn" onclick="resetQuiz('node')">↺ Retake Quiz</button>
+    </div>
+    <!-- GIT QUIZ -->
+    <div class="quiz-panel" id="quiz-git">
+        <div class="quiz-header">
+            <div class="quiz-header-left"><h3>🔀 Git &amp; GitHub</h3><p>Based on: Git &amp; GitHub Crash Course</p></div>
+            <div class="quiz-score-badge" id="score-git">Score: 0 / 5</div>
+        </div>
+        <div class="quiz-grid" id="qgrid-git"></div>
+        <button class="quiz-reset-btn" onclick="resetQuiz('git')">↺ Retake Quiz</button>
+    </div>
+    <!-- ML QUIZ -->
+    <div class="quiz-panel" id="quiz-ml">
+        <div class="quiz-header">
+            <div class="quiz-header-left"><h3>🤖 Machine Learning</h3><p>Based on: Machine Learning for Beginners</p></div>
+            <div class="quiz-score-badge" id="score-ml">Score: 0 / 5</div>
+        </div>
+        <div class="quiz-grid" id="qgrid-ml"></div>
+        <button class="quiz-reset-btn" onclick="resetQuiz('ml')">↺ Retake Quiz</button>
+    </div>
+    <!-- SQL QUIZ -->
+    <div class="quiz-panel" id="quiz-sql">
+        <div class="quiz-header">
+            <div class="quiz-header-left"><h3>🗄️ SQL &amp; Databases</h3><p>Based on: SQL Full Course for Beginners</p></div>
+            <div class="quiz-score-badge" id="score-sql">Score: 0 / 5</div>
+        </div>
+        <div class="quiz-grid" id="qgrid-sql"></div>
+        <button class="quiz-reset-btn" onclick="resetQuiz('sql')">↺ Retake Quiz</button>
+    </div>
+    <!-- CSS QUIZ -->
+    <div class="quiz-panel" id="quiz-css">
+        <div class="quiz-header">
+            <div class="quiz-header-left"><h3>🎨 CSS — Flexbox &amp; Grid</h3><p>Based on: CSS Full Course</p></div>
+            <div class="quiz-score-badge" id="score-css">Score: 0 / 5</div>
+        </div>
+        <div class="quiz-grid" id="qgrid-css"></div>
+        <button class="quiz-reset-btn" onclick="resetQuiz('css')">↺ Retake Quiz</button>
+    </div>
+
+    <!-- TIPS SECTION -->
+    <div style="margin-top:80px;">
+        <div class="section-label">Pro Tips</div>
+        <h2 class="section-title" style="margin-bottom:12px;">Study Smarter.<br>Not Harder. 💡</h2>
+        <p style="color:var(--muted);font-size:0.95rem;max-width:480px;line-height:1.7;margin-bottom:0;">One power tip per topic — distilled from each lecture so you can instantly apply what you've learned.</p>
+        <div class="tips-grid">
+            <div class="tip-card tip-py"><div class="tip-tag">🐍 Python</div><span class="tip-icon">⚡</span><h4>Use List Comprehensions</h4><p>Replace verbose <code>for</code> loops with list comprehensions: <code>[x*2 for x in nums]</code>. Cleaner, faster, and very Pythonic — interviewers love it.</p></div>
+            <div class="tip-card tip-web"><div class="tip-tag">🌐 HTML5</div><span class="tip-icon">🏗️</span><h4>Semantic Tags Over Divs</h4><p>Use <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;article&gt;</code> instead of generic divs everywhere. Search engines and screen readers reward you for it.</p></div>
+            <div class="tip-card tip-cs"><div class="tip-tag">🧠 CS</div><span class="tip-icon">📊</span><h4>Big-O is Your Friend</h4><p>Always ask: "what's the time complexity?" O(1) &gt; O(log n) &gt; O(n) &gt; O(n²). This one habit separates junior devs from seniors in every technical interview.</p></div>
+            <div class="tip-card tip-js"><div class="tip-tag">⚡ JavaScript</div><span class="tip-icon">🔒</span><h4>Prefer const, then let</h4><p>Default to <code>const</code>. Use <code>let</code> only when you need to reassign. Never use <code>var</code> — it has function scope and causes subtle bugs that are painful to debug.</p></div>
+            <div class="tip-card tip-react"><div class="tip-tag">⚛️ React</div><span class="tip-icon">🪝</span><h4>Keep Components Small</h4><p>If a component does more than one thing, split it. Single-responsibility components are easier to test, reuse, and reason about — the core of clean React architecture.</p></div>
+            <div class="tip-card tip-node"><div class="tip-tag">🟢 Node.js</div><span class="tip-icon">🌐</span><h4>Always Use Async/Await</h4><p>Replace callback hell and raw Promises with <code>async/await</code>. Wrap in <code>try/catch</code> for clean error handling. Your future self will be grateful.</p></div>
+            <div class="tip-card tip-git"><div class="tip-tag">🔀 Git</div><span class="tip-icon">✍️</span><h4>Write Atomic Commits</h4><p>One commit = one logical change. Use clear messages like <code>feat: add login form</code> or <code>fix: correct null check</code>. Conventional Commits makes your history readable at a glance.</p></div>
+            <div class="tip-card tip-ml"><div class="tip-tag">🤖 ML</div><span class="tip-icon">📈</span><h4>Never Skip EDA</h4><p>Exploratory Data Analysis (EDA) before modelling always saves time. Plot distributions, check for nulls, spot outliers. Garbage in = garbage out — no model can fix bad data.</p></div>
+            <div class="tip-card tip-sql"><div class="tip-tag">🗄️ SQL</div><span class="tip-icon">🔍</span><h4>Index Your Foreign Keys</h4><p>Always index columns used in <code>WHERE</code>, <code>JOIN</code>, and <code>ORDER BY</code>. A missing index on a large table turns a millisecond query into a multi-second timeout.</p></div>
+            <div class="tip-card tip-css"><div class="tip-tag">🎨 CSS</div><span class="tip-icon">📐</span><h4>Flexbox for 1D, Grid for 2D</h4><p>Use <code>display:flex</code> for rows or columns. Use <code>display:grid</code> when you need both axes. Mixing them is fine — the rule is: reach for the right tool for the dimension.</p></div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<!-- ── ABOUT ── -->
+<div class="section-bg" style="position:relative;z-index:2;">
+<div class="section-wrap" id="about">
+    <div class="section-label reveal">About</div>
+    <h2 class="section-title reveal reveal-d1">Built for the<br>Next Generation. ✦</h2>
+    <div class="about-grid">
+        <div>
+            <p class="section-desc" style="margin-bottom:0;">UIT University's CodeVerse Portal delivers flexible, accessible education to students across Pakistan and beyond — free of charge, always.</p>
+            <div class="about-features">
+                <div class="feature-item reveal reveal-d1"><div class="feature-icon">🏆</div><div><h4>High-Quality Content</h4><p>All materials created and vetted by experienced UIT faculty members with deep industry backgrounds.</p></div></div>
+                <div class="feature-item reveal reveal-d2"><div class="feature-icon">📱</div><div><h4>Learn Anywhere</h4><p>Cross-platform compatibility — access from desktop, tablet, or mobile on any connection speed.</p></div></div>
+                <div class="feature-item reveal reveal-d3"><div class="feature-icon">🔄</div><div><h4>Always Fresh</h4><p>Continuously updated content reflecting current industry standards and the latest tech trends.</p></div></div>
+                <div class="feature-item reveal"><div class="feature-icon">🎯</div><div><h4>Structured Paths</h4><p>Curated sequences from beginner to advanced, so you always know exactly what to learn next.</p></div></div>
+            </div>
+        </div>
+        <div class="about-visual reveal reveal-d2">
+            <div class="about-card-stack">
+                <div class="stack-card stack-card-1"><div class="card-label">Total Students</div><div class="card-num">5,200+</div><p>Active learners across CS, IT &amp; SE programs at UIT University</p></div>
+                <div class="stack-card stack-card-2"><div class="card-label">Course Completion</div><div class="card-num">94%</div><p>Students who finish enrolled courses — one of Pakistan's best</p></div>
+                <div class="stack-card stack-card-3"><div class="card-label">🎓 Academic Excellence</div><p style="font-size:0.85rem;color:var(--muted);margin-top:8px;line-height:1.6;">Affiliated with UIT University, Karachi — one of Pakistan's leading tech institutions since 2002.</p></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- ── CONTACT ── -->
+<div style="position:relative;z-index:2;">
+<div class="section-wrap" id="contact">
+    <div class="section-label reveal">Contact</div>
+    <h2 class="section-title reveal reveal-d1">Get in Touch.<br>We're Here. 📡</h2>
+    <div class="contact-grid">
+        <div class="contact-info">
+            <div class="contact-item reveal reveal-d1"><div class="contact-item-icon">🏫</div><div><h4>University</h4><p>UIT University — Dept. of Computer Science</p></div></div>
+            <div class="contact-item reveal reveal-d2"><div class="contact-item-icon">📧</div><div><h4>Email</h4><a href="mailto:elearning@uitu.edu.pk">elearning@uitu.edu.pk</a></div></div>
+            <div class="contact-item reveal reveal-d3"><div class="contact-item-icon">📞</div><div><h4>Phone</h4><a href="tel:+922112345678">+92-21-1234567</a></div></div>
+            <div class="contact-item reveal"><div class="contact-item-icon">🌐</div><div><h4>Website</h4><a href="https://uitu.edu.pk" target="_blank">uitu.edu.pk</a></div></div>
+            <div class="contact-item reveal"><div class="contact-item-icon">📍</div><div><h4>Address</h4><p>University Road, Karachi, Pakistan</p></div></div>
+            <div class="contact-item reveal"><div class="contact-item-icon">🕐</div><div><h4>Office Hours</h4><p>Mon – Fri · 9:00 AM – 5:00 PM PKT</p></div></div>
+        </div>
+        <div class="contact-form reveal reveal-d2">
+            <h3>Send a Message</h3>
+            <p class="form-subtitle">Fill out the form and we'll get back to you within 24 hours.</p>
+            <div class="form-row">
+                <div class="form-group"><label>Name</label><input type="text" id="c-name" placeholder="Your full name"></div>
+                <div class="form-group"><label>Email</label><input type="email" id="c-email" placeholder="your@email.com"></div>
+            </div>
+            <div class="form-group"><label>Subject</label><input type="text" id="c-subject" placeholder="What's this about?"></div>
+            <div class="form-group">
+                <label>Department</label>
+                <select id="c-dept">
+                    <option value="cs">Computer Science</option>
+                    <option value="it">Information Technology</option>
+                    <option value="se">Software Engineering</option>
+                    <option value="gen">General Inquiry</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Preferred Contact</label>
+                <div class="radio-group">
+                    <label class="radio-label"><input type="radio" name="c-method" value="email" checked> Email</label>
+                    <label class="radio-label"><input type="radio" name="c-method" value="phone"> Phone</label>
+                </div>
+            </div>
+            <div class="form-group"><label>Message</label><textarea id="c-msg" placeholder="Tell us how we can help you..."></textarea></div>
+            <div class="form-group"><label class="checkbox-label"><input type="checkbox" id="c-newsletter"> Subscribe to newsletter for course updates &amp; news</label></div>
+            <button class="btn-submit" onclick="handleContact()">Send Message ✉️</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-logo">Code<span>Verse</span></div>
+    <p style="color:var(--muted);font-size:0.85rem;max-width:420px;margin:0 auto 28px;line-height:1.6;">Empowering the next generation of Pakistani technologists through accessible digital education.</p>
+    <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#videos">Lectures</a>
+        <a href="#audio">Audio</a>
+        <a href="#benefits">Benefits</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="#" onclick="openModal(event)">Register</a>
+    </div>
+
+    <!-- Creator credentials -->
+    <div style="margin: 28px auto 0; padding: 22px 30px; max-width: 520px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+        <p style="font-size: 0.72rem; font-weight: 700; color: var(--lime); letter-spacing: 2px; text-transform: uppercase;">Designed &amp; Developed by</p>
+        <p style="font-family: 'Cormorant Garamond', serif; font-weight: 600; font-style: italic; font-size: 1.55rem; color: var(--text); letter-spacing: 0.5px;">Emaan Zehra Butt</p>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-top: 4px;">
+            <a href="mailto:emaanzehrabutt@gmail.com" style="display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.82rem;transition:color 0.2s;" onmouseover="this.style.color='var(--lime)'" onmouseout="this.style.color='var(--muted)'">
+                <span>✉️</span> emaanzehrabutt@gmail.com
+            </a>
+            <a href="https://www.linkedin.com/in/emaanzehra/" target="_blank" style="display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:0.82rem;transition:color 0.2s;" onmouseover="this.style.color='var(--sky)'" onmouseout="this.style.color='var(--muted)'">
+                <span>🔗</span> linkedin.com/in/emaanzehra
+            </a>
+        </div>
+    </div>
+
+    <p class="footer-copy" style="margin-top:24px;">© 2025 UIT University — CodeVerse E-Learning Platform. All rights reserved.</p>
+</footer>
+
+<script>
+/* ── CROSSHAIR CURSOR ── */
+const ch = document.getElementById('crosshair');
+let mx = 0, my = 0;
+const COLORS = ['#CAFF4C','#3DCCFF','#A855F7','#FF5C5C','#fff'];
+let sparkleTimer = 0;
+
+document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    ch.style.left = mx + 'px';
+    ch.style.top = my + 'px';
+    // sparkle trail
+    sparkleTimer++;
+    if (sparkleTimer % 3 === 0) spawnSparkle(mx, my);
+});
+
+function spawnSparkle(x, y) {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    const size = 3 + Math.random() * 5;
+    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    const ox = (Math.random() - 0.5) * 16;
+    const oy = (Math.random() - 0.5) * 16;
+    s.style.cssText = `left:${x + ox - size/2}px;top:${y + oy - size/2}px;width:${size}px;height:${size}px;background:${color};border-radius:${Math.random() > 0.5 ? '50%' : '2px'};`;
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 620);
+}
+
+document.querySelectorAll('a,button,input,select,textarea,audio,iframe,.video-card,.audio-card,.feature-item,.contact-item,.compare-card').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+});
+
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll', () => {
+    document.getElementById('navbar').style.background = window.scrollY > 60 ? 'rgba(13,13,20,0.95)' : 'rgba(13,13,20,0.7)';
+});
+
+/* ── SMOOTH SCROLL ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        const id = a.getAttribute('href').slice(1);
+        const target = document.getElementById(id);
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+});
+
+/* ── SCROLL REVEAL ── */
+const ro = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+/* ── VIDEO TABS ── */
+let userMode = 'none'; // 'none' | 'guest' | 'registered'
+
+function setTab(mode) {
+    const tabGuest = document.getElementById('tab-guest');
+    const tabReg = document.getElementById('tab-reg');
+    const guestVids = document.getElementById('guestVideos');
+    const regVids = document.getElementById('regVideos');
+
+    if (mode === 'registered') {
+        if (userMode !== 'registered') {
+            openModal(null);
+            return;
+        }
+        tabGuest.classList.remove('active'); tabReg.classList.add('active');
+        guestVids.style.display = 'none'; regVids.style.display = 'block';
+    } else {
+        tabGuest.classList.add('active'); tabReg.classList.remove('active');
+        guestVids.style.display = 'block'; regVids.style.display = 'none';
+    }
+}
+
+function enterGuest(e) {
+    if (e) e.preventDefault();
+    if (userMode === 'registered') return;
+    userMode = 'guest';
+    document.body.classList.add('guest-mode');
+    showToast('👀 Browsing as Guest', 'You have access to 4 preview lectures.');
+    // ensure guest tab is active
+    document.getElementById('tab-guest').classList.add('active');
+    document.getElementById('tab-reg').classList.remove('active');
+    document.getElementById('guestVideos').style.display = 'block';
+    document.getElementById('regVideos').style.display = 'none';
+    document.getElementById('videos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ── MODAL ── */
+function openModal(e) {
+    if (e) e.preventDefault();
+    if (userMode === 'registered') return;
+    document.getElementById('regModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+    document.getElementById('regModal').classList.remove('open');
+    document.body.style.overflow = '';
+}
+document.getElementById('closeModal').onclick = closeModal;
+document.getElementById('regModal').addEventListener('click', e => { if (e.target === document.getElementById('regModal')) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ── PHOTO UPLOAD ── */
+document.getElementById('photoInput').addEventListener('change', function() {
+    if (!this.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById('photoImg').src = e.target.result;
+        document.getElementById('photoImg').style.display = 'block';
+        document.getElementById('photoEmoji').style.display = 'none';
+    };
+    reader.readAsDataURL(this.files[0]);
+});
+
+/* ── PASSWORD STRENGTH ── */
+function checkStrength(val) {
+    const fill = document.getElementById('strengthFill');
+    const text = document.getElementById('strengthText');
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    const levels = [
+        { w:'0%', c:'transparent', t:'Enter a password' },
+        { w:'25%', c:'#FF5C5C', t:'Weak — try harder 😅' },
+        { w:'50%', c:'#FFA500', t:'Fair — getting better 👍' },
+        { w:'75%', c:'#3DCCFF', t:'Strong — nice work! 💪' },
+        { w:'100%', c:'#CAFF4C', t:"Excellent — you're secure 🔒" },
+    ];
+    const l = val.length === 0 ? levels[0] : levels[score];
+    fill.style.width = l.w; fill.style.background = l.c;
+    text.textContent = l.t; text.style.color = l.c === 'transparent' ? 'var(--muted)' : l.c;
+}
+
+/* ── REGISTER ── */
+function handleRegister() {
+    const fields = ['reg-fname','reg-lname','reg-email','reg-phone','reg-dob','reg-sid'];
+    const values = fields.map(id => document.getElementById(id).value.trim());
+    const dept = document.getElementById('reg-dept').value;
+    const pass = document.getElementById('reg-pass').value;
+    const pass2 = document.getElementById('reg-pass2').value;
+    const terms = document.getElementById('reg-terms').checked;
+    const fname = values[0];
+
+    if (values.some(v => !v) || !dept || !pass || !pass2) {
+        fields.forEach((id,i) => { if (!values[i]) highlightError(id); });
+        if (!dept) highlightError('reg-dept');
+        return;
+    }
+    if (pass !== pass2) { highlightError('reg-pass2'); return; }
+    if (!terms) { document.querySelector('.terms-check input').style.outline = '2px solid var(--coral)'; setTimeout(() => document.querySelector('.terms-check input').style.outline='', 2000); return; }
+
+    // Activate registered state
+    userMode = 'registered';
+    document.body.classList.add('registered');
+    document.body.classList.remove('guest-mode');
+
+    // Store credentials for sign-in
+    storedCredentials = { email: values[2], password: pass };
+    storedProfile = {
+        fname, lname: document.getElementById('reg-lname').value.trim(),
+        email: values[2], phone: values[3], dob: values[4],
+        sid: values[5], dept
+    };
+
+    activateRegisteredState(storedProfile);
+    closeModal();
+    initQuizzes();
+    showToast(`Welcome, ${fname}! 🎓`, 'Full library + quizzes unlocked!');
+}
+
+function highlightError(id) {
+    const el = document.getElementById(id);
+    el.style.borderColor = 'var(--coral)';
+    el.style.boxShadow = '0 0 0 3px rgba(255,92,92,0.2)';
+    setTimeout(() => { el.style.borderColor=''; el.style.boxShadow=''; }, 2000);
+}
+
+/* ── CONTACT ── */
+function handleContact() {
+    const name = document.getElementById('c-name').value.trim();
+    const email = document.getElementById('c-email').value.trim();
+    const subject = document.getElementById('c-subject').value.trim();
+    const msg = document.getElementById('c-msg').value.trim();
+    if (!name || !email || !subject || !msg) return;
+    showToast('Message sent! ✉️', "We'll reply within 24 hours.");
+    ['c-name','c-email','c-subject','c-msg'].forEach(id => document.getElementById(id).value = '');
+}
+
+/* ── MODAL TAB SWITCHER ── */
+function switchModalTab(tab) {
+    const isReg = tab === 'register';
+    document.getElementById('tabBtnReg').classList.toggle('active', isReg);
+    document.getElementById('tabBtnLogin').classList.toggle('active', !isReg);
+    document.getElementById('panelRegister').classList.toggle('active', isReg);
+    document.getElementById('panelLogin').classList.toggle('active', !isReg);
+    document.getElementById('signinError').classList.remove('show');
+}
+
+/* ── SIGN IN ── */
+// In-memory credential store (populated on registration)
+let storedCredentials = null;
+let storedProfile = null;
+
+function handleSignIn() {
+    const email = document.getElementById('si-email').value.trim();
+    const pass  = document.getElementById('si-pass').value;
+    const errEl = document.getElementById('signinError');
+
+    if (!email || !pass) {
+        errEl.textContent = 'Please enter your email and password.';
+        errEl.classList.add('show'); return;
+    }
+    if (!storedCredentials) {
+        errEl.textContent = 'No account found. Please register first.';
+        errEl.classList.add('show'); return;
+    }
+    if (email !== storedCredentials.email || pass !== storedCredentials.password) {
+        errEl.classList.add('show');
+        highlightError('si-email'); highlightError('si-pass'); return;
+    }
+
+    // Valid — restore session
+    errEl.classList.remove('show');
+    activateRegisteredState(storedProfile);
+    closeModal();
+    showToast(`Welcome back, ${storedProfile.fname}! 👋`, 'Signed in successfully.');
+}
+
+function openSignIn(e) {
+    if (e) e.preventDefault();
+    openModal(null);
+    switchModalTab('login');
+}
+
+function activateRegisteredState(profile) {
+    userMode = 'registered';
+    document.body.classList.add('registered');
+    document.body.classList.remove('guest-mode');
+
+    const initial = profile.fname.charAt(0).toUpperCase();
+    ['profileAvatar','profileAvatarLg'].forEach(id => document.getElementById(id).textContent = initial);
+    ['profileName','profileNameLg'].forEach(id => document.getElementById(id).textContent = profile.fname + ' ' + profile.lname);
+    ['profileRoll','profileRollLg'].forEach(id => document.getElementById(id).textContent = profile.sid);
+    document.getElementById('profileProgLg').textContent = profile.dept;
+    document.getElementById('profileEmailLg').textContent = profile.email;
+    document.getElementById('profileEmailLg').href = 'mailto:' + profile.email;
+    document.getElementById('profilePhoneLg').textContent = profile.phone;
+    document.getElementById('profileDobLg').textContent = profile.dob || '—';
+
+    document.getElementById('navQuizTips').style.display = '';
+    document.getElementById('navBenefits').style.display = 'none';
+    document.getElementById('tab-reg').classList.add('active');
+    document.getElementById('tab-guest').classList.remove('active');
+    document.getElementById('guestVideos').style.display = 'none';
+    document.getElementById('regVideos').style.display = 'block';
+    document.getElementById('guestAudio').style.display = 'none';
+    document.getElementById('regAudio').style.display = 'block';
+}
+
+
+function toggleProfile() {
+    document.getElementById('profileDropdown').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+    const wrap = document.getElementById('profileWrap');
+    if (wrap && !wrap.contains(e.target)) document.getElementById('profileDropdown').classList.remove('open');
+});
+function handleLogout() {
+    userMode = 'none';
+    document.body.classList.remove('registered','guest-mode');
+    document.getElementById('profileDropdown').classList.remove('open');
+    document.getElementById('navQuizTips').style.display = 'none';
+    document.getElementById('navBenefits').style.display = '';
+    document.getElementById('tab-guest').classList.add('active');
+    document.getElementById('tab-reg').classList.remove('active');
+    document.getElementById('guestVideos').style.display = 'block';
+    document.getElementById('regVideos').style.display = 'none';
+    document.getElementById('guestAudio').style.display = 'block';
+    document.getElementById('regAudio').style.display = 'none';
+    showToast('Signed out 👋', 'See you next time!');
+}
+
+/* ── QUIZ ENGINE ── */
+const QUIZZES = {
+    python: {
+        qs: [
+            { q: "What is the correct way to create a list in Python?", opts: ["list = (1,2,3)", "list = [1,2,3]", "list = {1,2,3}", "list = <1,2,3>"], ans: 1, exp: "Square brackets [] define a list. Parentheses create tuples, curly braces create sets/dicts." },
+            { q: "Which keyword defines a function in Python?", opts: ["function", "define", "def", "func"], ans: 2, exp: "'def' is used to define a function: def my_func(): — clean and minimal." },
+            { q: "What does len([1,2,3,4,5]) return?", opts: ["4", "5", "6", "Error"], ans: 1, exp: "len() returns the number of elements. The list has 5 items, so the answer is 5." },
+            { q: "What is a correct Python list comprehension to double numbers 1-5?", opts: ["[x*2 in range(1,6)]", "[x*2 for x in range(1,6)]", "(x*2 for x in range(1,6))", "map(x*2, range(1,6))"], ans: 1, exp: "List comprehension syntax: [expression for item in iterable]. Parentheses make a generator, not a list." },
+            { q: "Which data type is immutable in Python?", opts: ["list", "dict", "set", "tuple"], ans: 3, exp: "Tuples are immutable — once created, their contents cannot be changed. Use them for fixed data." }
+        ], scores: 0, answered: 0
+    },
+    html: {
+        qs: [
+            { q: "Which HTML5 tag is most appropriate for the main navigation?", opts: ["<div id='nav'>", "<navigation>", "<nav>", "<menu>"], ans: 2, exp: "The semantic <nav> element specifically marks navigation links — better for SEO and accessibility." },
+            { q: "What does the 'alt' attribute in an <img> tag provide?", opts: ["Image title on hover", "Alternative text for accessibility", "Image caption", "SEO keywords"], ans: 1, exp: "alt text is read by screen readers and shown when image fails to load — critical for accessibility." },
+            { q: "Which HTML5 input type validates an email format automatically?", opts: ['type="text"', 'type="mail"', 'type="email"', 'type="address"'], ans: 2, exp: 'type="email" provides built-in browser validation for email format — no JavaScript needed.' },
+            { q: "What is the purpose of the <article> tag?", opts: ["Any clickable content", "Self-contained content that could be shared independently", "The main page article", "News headlines only"], ans: 1, exp: "<article> represents self-contained content like a blog post or news story that makes sense on its own." },
+            { q: "Which attribute makes a form field required in HTML5?", opts: ["mandatory", "required", "validate", "must-fill"], ans: 1, exp: "The required attribute (boolean) prevents form submission if the field is empty — pure HTML, no JS." }
+        ], scores: 0, answered: 0
+    },
+    cs: {
+        qs: [
+            { q: "What is the time complexity of Binary Search?", opts: ["O(n)", "O(n²)", "O(log n)", "O(1)"], ans: 2, exp: "Binary search halves the search space each step — O(log n). Much faster than linear O(n) search." },
+            { q: "Which data structure uses LIFO (Last In, First Out)?", opts: ["Queue", "Stack", "Linked List", "Tree"], ans: 1, exp: "A Stack is LIFO. Think of a stack of plates — you remove from the top. Queues are FIFO (First In, First Out)." },
+            { q: "What does RAM stand for in computing?", opts: ["Read Access Memory", "Random Access Memory", "Runtime Application Memory", "Rapid Access Module"], ans: 1, exp: "RAM (Random Access Memory) is volatile memory used to store data the CPU is actively using." },
+            { q: "In a Binary Tree, how many children can each node have at most?", opts: ["1", "2", "3", "Unlimited"], ans: 1, exp: "A binary tree node has at most 2 children — left and right. This constraint makes traversal algorithms efficient." },
+            { q: "What is an Algorithm?", opts: ["A programming language", "A type of computer hardware", "A step-by-step procedure to solve a problem", "A database query"], ans: 2, exp: "An algorithm is a finite, step-by-step set of instructions to solve a problem or perform a computation." }
+        ], scores: 0, answered: 0
+    },
+    js: {
+        qs: [
+            { q: "Which keyword declares a block-scoped variable in modern JavaScript?", opts: ["var", "let", "variable", "declare"], ans: 1, exp: "'let' is block-scoped. 'var' is function-scoped and can cause hoisting bugs. Always prefer let or const." },
+            { q: "What does === check in JavaScript?", opts: ["Value only", "Type only", "Value AND type (strict equality)", "Reference only"], ans: 2, exp: "=== is strict equality — checks both value and type. 0 == '0' is true, but 0 === '0' is false." },
+            { q: "What will typeof null return in JavaScript?", opts: ['"null"', '"undefined"', '"object"', '"string"'], ans: 2, exp: "typeof null returns 'object' — this is a famous JavaScript bug from 1995 that was never fixed for backwards compatibility." },
+            { q: "Which method adds an element to the END of an array?", opts: [".shift()", ".unshift()", ".push()", ".append()"], ans: 2, exp: ".push() adds to the end. .pop() removes from end. .unshift() adds to start. .shift() removes from start." },
+            { q: "What is a closure in JavaScript?", opts: ["A way to end a function", "A function that remembers variables from its outer scope", "A method to close the browser", "An ES6 arrow function"], ans: 1, exp: "A closure is a function that retains access to its outer scope's variables even after the outer function returns." }
+        ], scores: 0, answered: 0
+    },
+    react: {
+        qs: [
+            { q: "What hook is used to manage state in a React functional component?", opts: ["useEffect", "useState", "useContext", "useRef"], ans: 1, exp: "useState returns [state, setState]. Call setState to trigger a re-render with the new value." },
+            { q: "What must every React component's render return?", opts: ["A string", "A single root JSX element (or Fragment)", "An array", "A DOM element directly"], ans: 1, exp: "React components must return a single root element. Use <React.Fragment> or <> </> to wrap multiple elements without adding a DOM node." },
+            { q: "What is the purpose of useEffect?", opts: ["Managing state", "Styling components", "Handling side effects (API calls, subscriptions, timers)", "Creating refs"], ans: 2, exp: "useEffect runs after render. Use it for data fetching, DOM manipulation, subscriptions, and cleanup." },
+            { q: "What is a key prop used for in React lists?", opts: ["Styling each list item", "Helping React identify which items changed for efficient re-rendering", "Setting item IDs in the DOM", "Sorting the list"], ans: 1, exp: "Keys help React's reconciliation algorithm identify which items were added, removed, or reordered — always use stable unique IDs." },
+            { q: "What is the correct way to pass data from parent to child in React?", opts: ["State", "Props", "Context only", "Redux only"], ans: 1, exp: "Props (properties) pass data from parent to child. They are read-only in the child — one-way data flow." }
+        ], scores: 0, answered: 0
+    },
+    node: {
+        qs: [
+            { q: "What does Express.js provide on top of Node.js?", opts: ["A database", "A templating engine only", "A minimal web framework with routing and middleware", "A front-end UI library"], ans: 2, exp: "Express adds routing, middleware support, and request/response helpers to Node.js's raw HTTP module." },
+            { q: "What HTTP method is used to CREATE a resource in REST APIs?", opts: ["GET", "PUT", "POST", "PATCH"], ans: 2, exp: "POST creates. GET reads. PUT replaces. PATCH partially updates. DELETE removes. This is the REST convention." },
+            { q: "In Node.js, what does require() do?", opts: ["Creates a new file", "Imports a module", "Runs a script asynchronously", "Declares a variable"], ans: 1, exp: "require() imports modules — built-in (fs, http), npm packages, or your own files. ES6 uses import/export instead." },
+            { q: "What is middleware in Express.js?", opts: ["Database query functions", "Functions that execute during the request-response cycle", "HTML template engines", "Static file handlers only"], ans: 1, exp: "Middleware are functions with (req, res, next). They can modify req/res or pass to the next handler with next()." },
+            { q: "Which method starts an Express server listening on a port?", opts: ["app.start()", "app.run()", "app.listen()", "app.serve()"], ans: 2, exp: "app.listen(PORT, callback) starts the server. Common pattern: app.listen(3000, () => console.log('Server running'))." }
+        ], scores: 0, answered: 0
+    },
+    git: {
+        qs: [
+            { q: "Which command stages all changes for a commit?", opts: ["git commit -a", "git stage .", "git add .", "git push all"], ans: 2, exp: "'git add .' stages all modified/new files in the current directory. Use git add <file> for specific files." },
+            { q: "What does 'git clone' do?", opts: ["Creates a new branch", "Copies a remote repository to your local machine", "Merges two branches", "Deletes a repository"], ans: 1, exp: "git clone copies an entire remote repo locally, including all commits, branches, and history." },
+            { q: "What is the purpose of a Pull Request (PR)?", opts: ["Pulling the latest code only", "Proposing changes for review before merging into the main branch", "Deleting a branch", "Cloning a repository"], ans: 1, exp: "A PR is a request to merge your branch into another. It enables code review, discussion, and CI checks before merging." },
+            { q: "Which command shows the commit history?", opts: ["git history", "git show", "git log", "git status"], ans: 2, exp: "git log shows commits with hash, author, date, and message. Try git log --oneline for a compact view." },
+            { q: "What does 'git stash' do?", opts: ["Permanently deletes changes", "Temporarily shelves uncommitted changes so you can switch branches", "Commits changes without a message", "Pushes to remote"], ans: 1, exp: "git stash saves your working directory changes temporarily. Use git stash pop to restore them later." }
+        ], scores: 0, answered: 0
+    },
+    ml: {
+        qs: [
+            { q: "Which type of learning uses labelled training data?", opts: ["Unsupervised Learning", "Reinforcement Learning", "Supervised Learning", "Transfer Learning"], ans: 2, exp: "Supervised learning trains on input-output pairs. The model learns to map inputs to correct outputs from labelled examples." },
+            { q: "What does overfitting mean in machine learning?", opts: ["The model is too simple", "The model performs great on training data but poorly on new data", "The model has too few parameters", "The training data is too large"], ans: 1, exp: "Overfitting means the model memorised training data instead of learning patterns. Fix with more data, regularisation, or dropout." },
+            { q: "Which Python library is most commonly used for ML?", opts: ["NumPy only", "Pandas only", "TensorFlow only", "scikit-learn"], ans: 3, exp: "scikit-learn provides consistent APIs for classification, regression, clustering, and preprocessing — ideal for beginners." },
+            { q: "What is a feature in machine learning?", opts: ["The model's prediction", "A measurable input variable used to make predictions", "The training algorithm", "The loss function"], ans: 1, exp: "Features are input variables (columns in your dataset). Feature engineering — choosing and transforming features — heavily impacts model performance." },
+            { q: "What does the train/test split achieve?", opts: ["Speeds up training", "Evaluates how well the model generalises to unseen data", "Reduces the dataset size", "Improves data quality"], ans: 1, exp: "Splitting data into train and test sets prevents leakage. The test set simulates real-world unseen data for honest evaluation." }
+        ], scores: 0, answered: 0
+    },
+    sql: {
+        qs: [
+            { q: "Which SQL clause filters rows based on a condition?", opts: ["HAVING", "ORDER BY", "WHERE", "GROUP BY"], ans: 2, exp: "WHERE filters individual rows before grouping. HAVING filters groups after GROUP BY. Both are used for different scenarios." },
+            { q: "What does SELECT DISTINCT do?", opts: ["Selects the first unique row", "Returns only unique values, removing duplicates", "Selects random rows", "Sorts results"], ans: 1, exp: "DISTINCT removes duplicate rows from results. SELECT DISTINCT city FROM users returns each city only once." },
+            { q: "Which JOIN returns only matching rows from BOTH tables?", opts: ["LEFT JOIN", "RIGHT JOIN", "FULL OUTER JOIN", "INNER JOIN"], ans: 3, exp: "INNER JOIN returns only rows where the join condition matches in both tables. Non-matching rows are excluded." },
+            { q: "What is a PRIMARY KEY?", opts: ["Any column in a table", "A uniquely identifying column that cannot be NULL", "The first column in a table", "A foreign reference to another table"], ans: 1, exp: "A PRIMARY KEY uniquely identifies each row, is NOT NULL, and must be unique. Every table should have one." },
+            { q: "Which SQL function counts the number of rows?", opts: ["SUM()", "TOTAL()", "COUNT()", "NUM()"], ans: 2, exp: "COUNT(*) counts all rows. COUNT(column) counts non-NULL values in that column. Essential for aggregation queries." }
+        ], scores: 0, answered: 0
+    },
+    css: {
+        qs: [
+            { q: "Which CSS property controls the space INSIDE an element's border?", opts: ["margin", "spacing", "padding", "gap"], ans: 2, exp: "Padding is inside the border. Margin is outside. Remember: content → padding → border → margin (box model out to in)." },
+            { q: "What does display: flex do?", opts: ["Makes elements invisible", "Creates a block-level flex container for 1D layout", "Creates a 2D grid", "Removes element from flow"], ans: 1, exp: "Flexbox creates a 1D layout (row or column). Use it for navbars, centering, and simple component alignment." },
+            { q: "Which value of position removes an element from the normal document flow?", opts: ["relative", "static", "absolute", "fixed"], ans: 2, exp: "absolute (and fixed) remove elements from normal flow. relative shifts from its normal position but stays in flow." },
+            { q: "What does the CSS 'z-index' property control?", opts: ["Zoom level", "Transparency", "Stacking order of overlapping elements", "Element size"], ans: 2, exp: "z-index controls the stacking order on the Z axis. Higher values appear in front of lower values (only on positioned elements)." },
+            { q: "In CSS Grid, what does 'grid-template-columns: repeat(3, 1fr)' create?", opts: ["3 rows of equal height", "3 columns each taking equal available width", "A 3x3 grid", "3 columns of 1 pixel each"], ans: 1, exp: "repeat(3, 1fr) creates 3 equal-width columns. 'fr' is a fractional unit that divides available space proportionally." }
+        ], scores: 0, answered: 0
+    }
+};
+
+const letters = ['A','B','C','D'];
+let quizScores = {};
+Object.keys(QUIZZES).forEach(k => quizScores[k] = { score: 0, answered: 0 });
+
+function buildQuiz(topic) {
+    const grid = document.getElementById('qgrid-' + topic);
+    if (!grid || grid.innerHTML !== '') return;
+    const data = QUIZZES[topic];
+    grid.innerHTML = data.qs.map((q, qi) => `
+        <div class="quiz-q" id="qq-${topic}-${qi}">
+            <div class="quiz-q-num">Question ${qi+1} of ${data.qs.length}</div>
+            <div class="quiz-q-text">${q.q}</div>
+            <div class="quiz-options">
+                ${q.opts.map((opt,oi) => `
+                    <div class="quiz-opt" id="qopt-${topic}-${qi}-${oi}" onclick="answerQ('${topic}',${qi},${oi})">
+                        <span class="quiz-opt-letter">${letters[oi]}</span>
+                        ${opt}
+                    </div>
+                `).join('')}
+            </div>
+            <div class="quiz-explanation" id="qexp-${topic}-${qi}">${q.exp}</div>
+        </div>
+    `).join('');
+}
+
+function answerQ(topic, qi, oi) {
+    const q = QUIZZES[topic].qs[qi];
+    const allOpts = document.querySelectorAll(`[id^="qopt-${topic}-${qi}-"]`);
+    const card = document.getElementById(`qq-${topic}-${qi}`);
+    const exp = document.getElementById(`qexp-${topic}-${qi}`);
+
+    allOpts.forEach(o => o.classList.add('disabled'));
+
+    if (oi === q.ans) {
+        allOpts[oi].classList.add('selected-correct');
+        card.classList.add('correct');
+        quizScores[topic].score++;
+    } else {
+        allOpts[oi].classList.add('selected-wrong');
+        allOpts[q.ans].classList.add('reveal-correct');
+        card.classList.add('wrong');
+    }
+    exp.classList.add('show');
+    quizScores[topic].answered++;
+    const total = QUIZZES[topic].qs.length;
+    document.getElementById('score-' + topic).textContent = `Score: ${quizScores[topic].score} / ${total}`;
+}
+
+function resetQuiz(topic) {
+    quizScores[topic] = { score: 0, answered: 0 };
+    document.getElementById('qgrid-' + topic).innerHTML = '';
+    document.getElementById('score-' + topic).textContent = `Score: 0 / ${QUIZZES[topic].qs.length}`;
+    buildQuiz(topic);
+}
+
+function setQuizTab(topic) {
+    document.querySelectorAll('.quiz-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.querySelectorAll('.quiz-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('quiz-' + topic).classList.add('active');
+    buildQuiz(topic);
+}
+
+// Build default quiz on registration
+function initQuizzes() { buildQuiz('python'); }
+
+function showToast(title, body) {
+    document.getElementById('toast-title').textContent = title;
+    document.getElementById('toast-body').textContent = body;
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4500);
+}
+</script>
+</body>
+</html>
