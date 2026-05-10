@@ -34,7 +34,7 @@
 
 ## ✦ What is CodeVerse?
 
-**CodeVerse** is the official e-learning platform of the **Department of Computer Science, UIT University, Karachi**. Students get structured access to high-quality video lectures across the most in-demand programming languages and frameworks, interactive quizzes, curated study tips, and energetic audio tracks — all in a cinematic, motion-rich single-page application.
+**CodeVerse** is the official e-learning platform of the **Department of Computer Science, UIT University, Karachi**. Students get structured access to high-quality video lectures across the most in-demand programming languages and frameworks, interactive quizzes, curated study tips, and energetic audio tracks, all in a cinematic, motion-rich single-page application.
 
 ```
 Single file  ·  Zero dependencies  ·  Zero frameworks  ·  ~125KB  ·  ~1600 lines
@@ -47,7 +47,7 @@ Single file  ·  Zero dependencies  ·  Zero frameworks  ·  ~125KB  ·  ~1600 l
 | # | Change | Details |
 |---|--------|---------|
 | 1 | 🔐 **Sign In system** | Returning users sign in with email + password stored from registration |
-| 2 | 🗂 **Tabbed auth modal** | Single modal with Create Account / Sign In tabs — instant switching |
+| 2 | 🗂 **Tabbed auth modal** | Single modal with Create Account / Sign In tabs, instant switching |
 | 3 | 🧠 **Quiz engine** | 10 quizzes · 5 MCQ each · 50 total questions · instant feedback + explanations |
 | 4 | 💡 **Pro Tips section** | 10 expert tips (one per topic) with colour-coded topic borders and code snippets |
 | 5 | 👤 **Profile dropdown** | Click avatar to see full profile card: name · roll no · program · email · phone · DOB |
@@ -81,7 +81,7 @@ State Transitions
 ```
 
 ### 🔐 Sign In Flow
-1. Click **Sign In** in the nav bar — modal opens directly on the Sign In tab
+1. Click **Sign In** in the nav bar, modal opens directly on the Sign In tab
 2. Enter the **email and password** used during registration
 3. On success → full session restored (profile, videos, audio, quizzes)
 4. Wrong credentials → red error banner + field highlight + retryable
@@ -95,7 +95,7 @@ State Transitions
 
 ## 🎬 Video Library
 
-### 👀 Guest Preview — 4 Videos
+### 👀 Guest Preview, 4 Videos
 
 | # | Title | Topic | Duration | Level |
 |:--|:------|:------|:---------|:------|
@@ -104,32 +104,32 @@ State Transitions
 | 3 | Computer Science Fundamentals | CS Theory | 52 min | Intermediate |
 | 4 | JavaScript Full Course for Beginners | JavaScript | 3.5 hrs | Beginner |
 
-### 🔐 Full Registered Library — 10 Videos
+### 🔐 Full Registered Library, 10 Videos
 
 | # | Title | Topic | Duration | Level |
 |:--|:------|:------|:---------|:------|
-| 1–4 | *(All guest videos)* | — | — | — |
+| 1–4 | *(All guest videos)* |, |, |, |
 | 5 | React JS Full Course | React | 8 hrs | Intermediate |
 | 6 | Node.js and Express Full Course | Node.js / Express | 8 hrs | Intermediate |
 | 7 | Git & GitHub Crash Course | Git | 68 min | All Levels |
 | 8 | Machine Learning for Beginners | ML / Python | 3 hrs | Intermediate |
 | 9 | SQL Full Course for Beginners | SQL / Databases | 4 hrs | Beginner |
-| 10 | CSS Full Course — Flexbox & Grid | CSS | 11 hrs | Beginner |
+| 10 | CSS Full Course, Flexbox & Grid | CSS | 11 hrs | Beginner |
 
-> **Iframe Fallback** — Every video card includes a hidden "▶ Watch on YouTube" fallback that appears when the embed is blocked (e.g. when opening from `file://`). Host the file on any server and all embeds load normally.
+> **Iframe Fallback**, Every video card includes a hidden "▶ Watch on YouTube" fallback that appears when the embed is blocked (e.g. when opening from `file://`). Host the file on any server and all embeds load normally.
 
 ---
 
 ## 🎧 Audio Library
 
-### 👀 Guest — 3 Tracks
+### 👀 Guest, 3 Tracks
 | Track | Name | Vibe |
 |:------|:-----|:-----|
 | ⚡ | Deep Work Ambient Electronic | Pulsing textures, pure flow state |
 | 🔥 | Synthwave Focus Drive | Retro-futuristic synth grooves |
 | 🚀 | Hyperpop Hustle Mode | High-BPM beats to kill procrastination |
 
-### 🔐 Full Library — 8 Tracks *(all guest + 5 more)*
+### 🔐 Full Library, 8 Tracks *(all guest + 5 more)*
 | Track | Name | Vibe |
 |:------|:-----|:-----|
 | 🎛️ | Drum & Bass Brain Fuel | Fast DnB for hackathon sprints |
@@ -158,7 +158,7 @@ State Transitions
 | 🎨 CSS | Box model, flexbox vs grid, z-index, position | CSS Course |
 
 **Quiz features:**
-- Instant colour feedback — ✅ lime green = correct, ❌ coral red = wrong
+- Instant colour feedback, ✅ lime green = correct, ❌ coral red = wrong
 - Correct answer always reveals itself after selection
 - Explanation panel slides open beneath each answered question
 - Live score badge updates in real time (Score: 3 / 5)
@@ -168,20 +168,20 @@ State Transitions
 
 ## 💡 Pro Tips
 
-One power tip per topic — each distilled from the lecture content for immediate practical use.
+One power tip per topic, each distilled from the lecture content for immediate practical use.
 
 | Topic | Tip |
 |:------|:----|
-| 🐍 Python | Use list comprehensions — cleaner and faster than loops |
+| 🐍 Python | Use list comprehensions, cleaner and faster than loops |
 | 🌐 HTML5 | Use semantic tags (`<nav>`, `<article>`) over generic divs |
-| 🧠 CS | Always ask "what's the time complexity?" — the interview habit |
+| 🧠 CS | Always ask "what's the time complexity?", the interview habit |
 | ⚡ JS | Default to `const`, use `let` only when needed, never `var` |
 | ⚛️ React | One component = one responsibility. Split early. |
-| 🟢 Node.js | Use `async/await` with `try/catch` — no callback hell |
+| 🟢 Node.js | Use `async/await` with `try/catch`, no callback hell |
 | 🔀 Git | Atomic commits with conventional messages (`feat:`, `fix:`) |
-| 🤖 ML | Always run EDA before modelling — garbage in, garbage out |
+| 🤖 ML | Always run EDA before modelling, garbage in, garbage out |
 | 🗄️ SQL | Index `WHERE`, `JOIN`, and `ORDER BY` columns |
-| 🎨 CSS | Flexbox for 1D layout, Grid for 2D — use the right tool |
+| 🎨 CSS | Flexbox for 1D layout, Grid for 2D, use the right tool |
 
 ---
 
@@ -309,17 +309,17 @@ portal.html                        (~125KB · ~1600 lines · single file)
 ## 🚀 Getting Started
 
 ```bash
-# Option 1 — Direct (instant)
-# Double-click portal.html — opens in your default browser
+# Option 1, Direct (instant)
+# Double-click portal.html, opens in your default browser
 
-# Option 2 — Python local server (recommended — enables YouTube embeds)
+# Option 2, Python local server (recommended, enables YouTube embeds)
 python -m http.server 8000
 # Visit: http://localhost:8000/portal.html
 
-# Option 3 — Node.js
+# Option 3, Node.js
 npx serve .
 
-# Option 4 — VS Code Live Server
+# Option 4, VS Code Live Server
 # Right-click portal.html → "Open with Live Server"
 ```
 
@@ -346,7 +346,7 @@ npx vercel --prod
 ## 🛠️ Customisation Guide
 
 ### Changing Colours
-All design tokens live in `:root` — change one, it propagates everywhere:
+All design tokens live in `:root`, change one, it propagates everywhere:
 ```css
 :root {
     --lime:   #CAFF4C;  /* Primary: CTAs, cursor, quiz correct */
@@ -411,7 +411,7 @@ In the `.tips-grid`, duplicate a `.tip-card`:
 
 ### Adjusting Sparkle Density
 ```js
-// In <script> — find:
+// In <script>, find:
 if (sparkleTimer % 3 === 0)    // default: every 3rd mouse-move
 
 // Options:
@@ -436,7 +436,7 @@ if (sparkleTimer % 6 === 0)    // minimal
 ## 🗺️ Roadmap
 
 ```
-v4.0 — Current             ████████████████████  100%
+v4.0, Current             ████████████████████  100%
   ✅ Guest / Registered tiers
   ✅ Sign In with stored credentials
   ✅ 10 video lectures (real YouTube + fallbacks)
@@ -448,7 +448,7 @@ v4.0 — Current             █████████████████
   ✅ Benefits vs Quiz section swap on registration
   ✅ Sign Out + full session reset
 
-v5.0 — Planned
+v5.0, Planned
   ⬜ Persistent login via localStorage
   ⬜ Per-video progress bar + completion badges
   ⬜ Quiz score history + leaderboard
@@ -490,7 +490,7 @@ v5.0 — Planned
 
 `HTML5` &nbsp;`CSS3` &nbsp;`Vanilla JS` &nbsp;`Google Fonts` &nbsp;`YouTube Embed API`
 
-*UIT University — Department of Computer Science, Karachi 🇵🇰*
+*UIT University, Department of Computer Science, Karachi 🇵🇰*
 
 <br>
 
