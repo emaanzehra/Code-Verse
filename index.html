@@ -3,19 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="1024x1024" href="favicon.png">
-    <link rel="icon" type="image/png" sizes="4096x4096" href="favicon-4096.png">
-    <link rel="icon" type="image/png" sizes="2048x2048" href="favicon-2048.png">
-    <link rel="icon" type="image/png" sizes="1024x1024" href="favicon-1024.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
-    <link rel="icon" type="image/png" sizes="256x256" href="favicon-256.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
-    <link rel="icon" href="favicon.ico">
-    <link rel="icon" type="image/svg+xml" href="icon.svg">
-    <link rel="mask-icon" href="icon.svg" color="#CAFF4C">
     <title>CodeVerse</title>
+    <link rel="icon" type="image/png" href="Gemini_Generated_Image_gm6d80gm6d80gm6d.png">
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -229,8 +218,14 @@
 
         /* VIDEO IFRAME FALLBACK */
         .video-thumb-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: var(--ink3); overflow: hidden; }
-        .video-thumb { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block; }
-        .video-fallback { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg,var(--ink3),#12121c); color: var(--muted); font-size: 0.82rem; text-align: center; padding: 20px; }
+        .video-thumb { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block; z-index: 2; }
+        .video-fallback {
+            position: absolute; inset: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 10px;
+            background: linear-gradient(135deg,var(--ink3),#12121c);
+            color: var(--muted); font-size: 0.82rem; text-align: center;
+            padding: 20px; z-index: 1;
+        }
         .video-fallback .vf-icon { font-size: 2.2rem; }
         .video-fallback p { max-width: 200px; line-height: 1.5; }
         .video-fallback a { color: var(--lime); font-weight: 700; font-size: 0.83rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border: 1.5px solid rgba(202,255,76,0.3); border-radius: 50px; margin-top: 4px; transition: all 0.25s ease; }
@@ -514,7 +509,7 @@
             <div class="modal-header">
                 <div class="modal-badge">✦ Join CodeVerse</div>
                 <h2>Create Your<br>Student Account</h2>
-                <p>Unlock unlimited video lectures, audio resources, and exclusive study materials — completely free.</p>
+                <p>Unlock unlimited video lectures, audio resources, and exclusive study materials. completely free.</p>
             </div>
             <div class="photo-upload" onclick="document.getElementById('photoInput').click()">
                 <div class="photo-preview" id="photoPreview">
@@ -637,7 +632,7 @@
                 <div class="profile-dropdown-body">
                     <div class="profile-dropdown-row"><span>📧</span><a id="profileEmailLg" href="#">ali@uitu.edu.pk</a></div>
                     <div class="profile-dropdown-row"><span>📱</span><span id="profilePhoneLg">+92-300-0000000</span></div>
-                    <div class="profile-dropdown-row"><span>🎂</span><span id="profileDobLg">—</span></div>
+                    <div class="profile-dropdown-row"><span>🎂</span><span id="profileDobLg"> </span></div>
                     <div class="profile-dropdown-row"><span>✅</span><span style="color:var(--lime);font-weight:600;">Registered Student</span></div>
                 </div>
                 <div class="profile-dropdown-footer">
@@ -651,9 +646,9 @@
 <!-- ── HERO ── -->
 <section id="home" style="position:relative;z-index:2;">
     <div style="max-width:820px;margin:0 auto;">
-        <div class="hero-badge"><div class="hero-badge-dot"></div>UIT University — Karachi, Pakistan</div>
+        <div class="hero-badge"><div class="hero-badge-dot"></div>UIT University. Karachi, Pakistan</div>
         <h1 class="hero-title">Learn Without<br><span class="accent">Limits.</span></h1>
-        <p class="hero-sub">CodeVerse is your gateway to world-class tech education. Video lectures, audio content, and interactive resources — all in one vibrant hub.</p>
+        <p class="hero-sub">CodeVerse is your gateway to world-class tech education. Video lectures, audio content, and interactive resources. all in one vibrant hub.</p>
         <div class="hero-actions">
             <a href="#videos" class="btn btn-primary">🎬 Start Learning</a>
             <a href="#" class="btn btn-outline" onclick="openModal(event)">✦ Register Free</a>
@@ -695,7 +690,7 @@
 <div class="section-wrap" id="videos">
     <div class="section-label reveal">Video Lectures</div>
     <h2 class="section-title reveal reveal-d1">Watch. Learn.<br>Level Up. 🎬</h2>
-    <p class="section-desc reveal reveal-d2" id="videosDesc">Handpicked lectures on programming languages, frameworks & computer science — curated for UIT students.</p>
+    <p class="section-desc reveal reveal-d2" id="videosDesc">Handpicked lectures on programming languages, frameworks & computer science. curated for UIT students.</p>
 
     <!-- Tab bar -->
     <div class="video-tab-bar reveal reveal-d3" id="videoTabBar">
@@ -703,7 +698,7 @@
             👀 Guest Access <span class="tab-count">4</span>
         </button>
         <button class="video-tab" onclick="setTab('registered')" id="tab-reg" id="tabReg">
-            🔐 Full Library <span class="tab-count">10</span>
+            🔐 Full Library
         </button>
     </div>
 
@@ -712,16 +707,16 @@
         <div class="video-grid">
             <div class="video-card reveal reveal-d1">
                 <div class="video-tag">🔥 Popular</div>
-                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/rfscVS0vtbw" title="Python Tutorial" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=rfscVS0vtbw" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/rfscVS0vtbw?rel=0&modestbranding=1" title="Python Tutorial" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=rfscVS0vtbw" target="_blank">▶ Watch on YouTube</a></div></div>
                 <div class="video-info">
                     <h3>Python Full Course for Beginners</h3>
-                    <p>Learn Python from scratch — variables, functions, OOP, and real projects. The most beginner-friendly language to start with.</p>
+                    <p>Learn Python from scratch. variables, functions, OOP, and real projects. The most beginner-friendly language to start with.</p>
                     <div class="video-meta"><span>🕐 4.5 hrs</span><span>⭐ 4.9</span><span>👥 Beginner</span></div>
                 </div>
             </div>
             <div class="video-card reveal reveal-d2">
                 <div class="video-tag" style="background:var(--sky);color:var(--ink);">🌐 Web</div>
-                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/UB1O30fR-EE" title="HTML5 Tutorial" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=UB1O30fR-EE" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/kUMe1FH4CHE?rel=0&modestbranding=1" title="HTML5 Tutorial" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=kUMe1FH4CHE" target="_blank">▶ Watch on YouTube</a></div></div>
                 <div class="video-info">
                     <h3>HTML5 and Web Development</h3>
                     <p>Master HTML5 fundamentals, semantic elements, and modern web development techniques for building responsive websites.</p>
@@ -730,7 +725,7 @@
             </div>
             <div class="video-card reveal reveal-d3">
                 <div class="video-tag" style="background:var(--violet);color:white;">🧠 CS</div>
-                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/SzJ46YA_RaA" title="CS Basics" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=SzJ46YA_RaA" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/zOjov-2OZ0E?rel=0&modestbranding=1" title="CS Basics" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=zOjov-2OZ0E" target="_blank">▶ Watch on YouTube</a></div></div>
                 <div class="video-info">
                     <h3>Computer Science Fundamentals</h3>
                     <p>Explore core CS concepts including algorithms, data structures, and computational thinking for aspiring developers.</p>
@@ -739,10 +734,10 @@
             </div>
             <div class="video-card reveal">
                 <div class="video-tag" style="background:var(--coral);color:white;">⚡ JS</div>
-                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/PkZNo7MFNFg" title="JavaScript Tutorial" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=PkZNo7MFNFg" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/PkZNo7MFNFg?rel=0&modestbranding=1" title="JavaScript Tutorial" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=PkZNo7MFNFg" target="_blank">▶ Watch on YouTube</a></div></div>
                 <div class="video-info">
                     <h3>JavaScript Full Course for Beginners</h3>
-                    <p>Learn JavaScript fundamentals — the language of the web. Covers variables, DOM manipulation, events, and modern ES6+ syntax.</p>
+                    <p>Learn JavaScript fundamentals. the language of the web. Covers variables, DOM manipulation, events, and modern ES6+ syntax.</p>
                     <div class="video-meta"><span>🕐 3.5 hrs</span><span>⭐ 4.9</span><span>👥 Beginner</span></div>
                 </div>
             </div>
@@ -752,31 +747,31 @@
             <div class="lock-banner-left">
                 <div class="lock-icon">🔒</div>
                 <div>
-                    <h3>6 More Lectures Waiting For You</h3>
-                    <p>Register for free to unlock the full library — React, Node.js, Git, Machine Learning & more.</p>
+                    <h3>Unlimited Lectures Waiting For You</h3>
+                    <p>Register for free to unlock the full library. React, Node.js, Git, Machine Learning and more.</p>
                 </div>
             </div>
             <button class="btn btn-primary" onclick="openModal(event)">Unlock All Videos →</button>
         </div>
     </div>
 
-    <!-- REGISTERED Videos (all 10) — hidden until registered -->
+    <!-- REGISTERED Videos (all 10). hidden until registered -->
     <div id="regVideos" style="display:none;">
         <div class="video-grid">
             <!-- 1 -->
             <div class="video-card reveal reveal-d1">
                 <div class="video-tag">🔥 Popular</div>
-                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/rfscVS0vtbw" title="Python" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=rfscVS0vtbw" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/rfscVS0vtbw?rel=0&modestbranding=1" title="Python" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=rfscVS0vtbw" target="_blank">▶ Watch on YouTube</a></div></div>
                 <div class="video-info">
                     <h3>Python Full Course for Beginners</h3>
-                    <p>Learn Python from scratch — variables, functions, OOP, and real projects.</p>
+                    <p>Learn Python from scratch. variables, functions, OOP, and real projects.</p>
                     <div class="video-meta"><span>🕐 4.5 hrs</span><span>⭐ 4.9</span><span>👥 Beginner</span></div>
                 </div>
             </div>
             <!-- 2 -->
             <div class="video-card reveal reveal-d2">
                 <div class="video-tag" style="background:var(--sky);color:var(--ink);">🌐 Web</div>
-                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/UB1O30fR-EE" title="HTML5" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=UB1O30fR-EE" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/kUMe1FH4CHE?rel=0&modestbranding=1" title="HTML5" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=kUMe1FH4CHE" target="_blank">▶ Watch on YouTube</a></div></div>
                 <div class="video-info">
                     <h3>HTML5 and Web Development</h3>
                     <p>Master HTML5 fundamentals, semantic elements, and responsive design techniques.</p>
@@ -786,57 +781,57 @@
             <!-- 3 -->
             <div class="video-card reveal reveal-d3">
                 <div class="video-tag" style="background:var(--violet);color:white;">🧠 CS</div>
-                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/SzJ46YA_RaA" title="CS Basics" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=SzJ46YA_RaA" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/zOjov-2OZ0E?rel=0&modestbranding=1" title="CS Basics" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=zOjov-2OZ0E" target="_blank">▶ Watch on YouTube</a></div></div>
                 <div class="video-info">
                     <h3>Computer Science Fundamentals</h3>
-                    <p>Core CS concepts — algorithms, data structures, and computational thinking.</p>
+                    <p>Core CS concepts. algorithms, data structures, and computational thinking.</p>
                     <div class="video-meta"><span>🕐 52 min</span><span>⭐ 4.9</span><span>👥 Intermediate</span></div>
                 </div>
             </div>
             <!-- 4 -->
             <div class="video-card reveal">
                 <div class="video-tag" style="background:var(--coral);color:white;">⚡ JS</div>
-                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/PkZNo7MFNFg" title="JavaScript" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=PkZNo7MFNFg" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/PkZNo7MFNFg?rel=0&modestbranding=1" title="JavaScript" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=PkZNo7MFNFg" target="_blank">▶ Watch on YouTube</a></div></div>
                 <div class="video-info">
                     <h3>JavaScript Full Course for Beginners</h3>
-                    <p>Master JavaScript — DOM manipulation, events, and modern ES6+ syntax.</p>
+                    <p>Master JavaScript. DOM manipulation, events, and modern ES6+ syntax.</p>
                     <div class="video-meta"><span>🕐 3.5 hrs</span><span>⭐ 4.9</span><span>👥 Beginner</span></div>
                 </div>
             </div>
             <!-- 5 -->
             <div class="video-card reveal reveal-d1">
                 <div class="video-tag" style="background:#61DAFB;color:#000;">⚛️ React</div>
-                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/bMknfKXIFA8" title="React" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=bMknfKXIFA8" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/bMknfKXIFA8?rel=0&modestbranding=1" title="React" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=bMknfKXIFA8" target="_blank">▶ Watch on YouTube</a></div></div>
                 <div class="video-info">
                     <h3>React JS Full Course</h3>
-                    <p>Build modern UIs with React — components, hooks, state management, and real-world projects.</p>
+                    <p>Build modern UIs with React. components, hooks, state management, and real-world projects.</p>
                     <div class="video-meta"><span>🕐 8 hrs</span><span>⭐ 4.9</span><span>👥 Intermediate</span></div>
                 </div>
             </div>
             <!-- 6 -->
             <div class="video-card reveal reveal-d2">
                 <div class="video-tag" style="background:#68A063;color:white;">🟢 Node</div>
-                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/Oe421EPjeBE" title="Node.js" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=Oe421EPjeBE" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/Oe421EPjeBE?rel=0&modestbranding=1" title="Node.js" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=Oe421EPjeBE" target="_blank">▶ Watch on YouTube</a></div></div>
                 <div class="video-info">
                     <h3>Node.js and Express Full Course</h3>
-                    <p>Server-side JavaScript with Node.js and Express — REST APIs, routing, and databases.</p>
+                    <p>Server-side JavaScript with Node.js and Express. REST APIs, routing, and databases.</p>
                     <div class="video-meta"><span>🕐 8 hrs</span><span>⭐ 4.8</span><span>👥 Intermediate</span></div>
                 </div>
             </div>
             <!-- 7 -->
             <div class="video-card reveal reveal-d3">
                 <div class="video-tag" style="background:#F05032;color:white;">🔀 Git</div>
-                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/RGOj5yH7evk" title="Git & GitHub" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=RGOj5yH7evk" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/RGOj5yH7evk?rel=0&modestbranding=1" title="Git & GitHub" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=RGOj5yH7evk" target="_blank">▶ Watch on YouTube</a></div></div>
                 <div class="video-info">
                     <h3>Git & GitHub Crash Course</h3>
-                    <p>Master version control — commits, branches, pull requests, and collaborative workflows on GitHub.</p>
+                    <p>Master version control. commits, branches, pull requests, and collaborative workflows on GitHub.</p>
                     <div class="video-meta"><span>🕐 68 min</span><span>⭐ 4.9</span><span>👥 All Levels</span></div>
                 </div>
             </div>
             <!-- 8 -->
             <div class="video-card reveal">
                 <div class="video-tag" style="background:#FF6B35;color:white;">🤖 ML</div>
-                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/7eh4d6sabA0" title="Machine Learning" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=7eh4d6sabA0" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/i_LwzRVP7bg?rel=0&modestbranding=1" title="Machine Learning" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=i_LwzRVP7bg" target="_blank">▶ Watch on YouTube</a></div></div>
                 <div class="video-info">
                     <h3>Machine Learning for Beginners</h3>
                     <p>Understand supervised & unsupervised learning, neural networks, and practical ML with Python & scikit-learn.</p>
@@ -846,20 +841,20 @@
             <!-- 9 -->
             <div class="video-card reveal reveal-d1">
                 <div class="video-tag" style="background:#4DB6AC;color:white;">🗄️ SQL</div>
-                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/HXV3zeQKqGY" title="SQL" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=HXV3zeQKqGY" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/HXV3zeQKqGY?rel=0&modestbranding=1" title="SQL" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=HXV3zeQKqGY" target="_blank">▶ Watch on YouTube</a></div></div>
                 <div class="video-info">
                     <h3>SQL Full Course for Beginners</h3>
-                    <p>Learn relational databases from scratch — queries, joins, subqueries, indexes, and database design principles.</p>
+                    <p>Learn relational databases from scratch. queries, joins, subqueries, indexes, and database design principles.</p>
                     <div class="video-meta"><span>🕐 4 hrs</span><span>⭐ 4.9</span><span>👥 Beginner</span></div>
                 </div>
             </div>
             <!-- 10 -->
             <div class="video-card reveal reveal-d2">
                 <div class="video-tag" style="background:#2196F3;color:white;">🎨 CSS</div>
-                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/1Rs2ND1ryYc" title="CSS" allowfullscreen loading="lazy"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=1Rs2ND1ryYc" target="_blank">▶ Watch on YouTube</a></div></div>
+                <div class="video-thumb-wrap"><iframe class="video-thumb" src="https://www.youtube.com/embed/1Rs2ND1ryYc?rel=0&modestbranding=1" title="CSS" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="video-fallback"><div class="vf-icon">▶️</div><p>Videos load when hosted on a server</p><a href="https://www.youtube.com/watch?v=1Rs2ND1ryYc" target="_blank">▶ Watch on YouTube</a></div></div>
                 <div class="video-info">
-                    <h3>CSS Full Course — Flexbox & Grid</h3>
-                    <p>Complete CSS mastery — selectors, animations, Flexbox layout, CSS Grid, and responsive design patterns.</p>
+                    <h3>CSS Full Course. Flexbox & Grid</h3>
+                    <p>Complete CSS mastery. selectors, animations, Flexbox layout, CSS Grid, and responsive design patterns.</p>
                     <div class="video-meta"><span>🕐 11 hrs</span><span>⭐ 4.8</span><span>👥 Beginner</span></div>
                 </div>
             </div>
@@ -873,7 +868,7 @@
 <div class="section-wrap" id="audio">
     <div class="section-label reveal">Audio Content</div>
     <h2 class="section-title reveal reveal-d1">Tune In &amp;<br>Focus Deep. 🎧</h2>
-    <p class="section-desc reveal reveal-d2">High-energy study tracks and brain-boosting audio — handpicked to keep you locked in and levelling up.</p>
+    <p class="section-desc reveal reveal-d2">High-energy study tracks and brain-boosting audio. handpicked to keep you locked in and levelling up.</p>
 
     <!-- GUEST AUDIO (3 tracks) -->
     <div id="guestAudio">
@@ -881,13 +876,13 @@
             <div class="audio-card reveal reveal-d1">
                 <div class="audio-icon">⚡</div>
                 <h3>Deep Work Ambient Electronic</h3>
-                <p>Pulsing electronic textures built for deep focus — no lyrics, pure flow state. Your brain's favourite coding soundtrack.</p>
+                <p>Pulsing electronic textures built for deep focus. no lyrics, pure flow state. Your brain's favourite coding soundtrack.</p>
                 <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
             </div>
             <div class="audio-card reveal reveal-d2">
                 <div class="audio-icon">🔥</div>
                 <h3>Synthwave Focus Drive</h3>
-                <p>Retro-futuristic synth grooves with driving beats — uplifting and energetic, perfect for powering through assignments.</p>
+                <p>Retro-futuristic synth grooves with driving beats. uplifting and energetic, perfect for powering through assignments.</p>
                 <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
             </div>
             <div class="audio-card reveal reveal-d3">
@@ -903,26 +898,26 @@
                 <span style="font-size:1.8rem;">🔒</span>
                 <div>
                     <h3>5 More Tracks Locked</h3>
-                    <p>Register free to unlock the full audio library — Lo-fi, Drum &amp; Bass, Chillstep &amp; more.</p>
+                    <p>Register free to unlock the full audio library. Lo-fi, Drum &amp; Bass, Chillstep &amp; more.</p>
                 </div>
             </div>
             <button class="btn btn-primary" style="white-space:nowrap;padding:11px 24px;font-size:0.87rem;" onclick="openModal(event)">Unlock All Audio →</button>
         </div>
     </div>
 
-    <!-- REGISTERED AUDIO (8 tracks) — unlocked after registration -->
+    <!-- REGISTERED AUDIO (8 tracks). unlocked after registration -->
     <div id="regAudio" style="display:none;">
         <div class="audio-grid">
             <div class="audio-card reveal reveal-d1">
                 <div class="audio-icon">⚡</div>
                 <h3>Deep Work Ambient Electronic</h3>
-                <p>Pulsing electronic textures built for deep focus — no lyrics, pure flow state. Your brain's favourite coding soundtrack.</p>
+                <p>Pulsing electronic textures built for deep focus. no lyrics, pure flow state. Your brain's favourite coding soundtrack.</p>
                 <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
             </div>
             <div class="audio-card reveal reveal-d2">
                 <div class="audio-icon">🔥</div>
                 <h3>Synthwave Focus Drive</h3>
-                <p>Retro-futuristic synth grooves with driving beats — uplifting and energetic, perfect for powering through assignments.</p>
+                <p>Retro-futuristic synth grooves with driving beats. uplifting and energetic, perfect for powering through assignments.</p>
                 <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
             </div>
             <div class="audio-card reveal reveal-d3">
@@ -934,25 +929,25 @@
             <div class="audio-card reveal">
                 <div class="audio-icon">🎛️</div>
                 <h3>Drum &amp; Bass Brain Fuel</h3>
-                <p>Fast-paced DnB rhythms that activate your focus neurons — ideal for intense study sessions and hackathon sprints.</p>
+                <p>Fast-paced DnB rhythms that activate your focus neurons. ideal for intense study sessions and hackathon sprints.</p>
                 <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
             </div>
             <div class="audio-card reveal reveal-d1">
                 <div class="audio-icon">🌊</div>
                 <h3>Chillstep Midnight Session</h3>
-                <p>Smooth, melodic chillstep for late-night study sessions — dreamy yet focused, the perfect 2AM coding companion.</p>
+                <p>Smooth, melodic chillstep for late-night study sessions. dreamy yet focused, the perfect 2AM coding companion.</p>
                 <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
             </div>
             <div class="audio-card reveal reveal-d2">
                 <div class="audio-icon">🎮</div>
                 <h3>Lo-fi Beats to Code To</h3>
-                <p>Mellow lo-fi hip-hop loops — soft enough not to distract, groovy enough to keep you in the zone for hours.</p>
+                <p>Mellow lo-fi hip-hop loops. soft enough not to distract, groovy enough to keep you in the zone for hours.</p>
                 <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
             </div>
             <div class="audio-card reveal reveal-d3">
                 <div class="audio-icon">🌀</div>
                 <h3>Techno Sprint Mode</h3>
-                <p>Underground techno energy for deadline crunches — relentless, rhythmic, and completely distraction-destroying.</p>
+                <p>Underground techno energy for deadline crunches. relentless, rhythmic, and completely distraction-destroying.</p>
                 <audio controls><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3" type="audio/mpeg">Your browser does not support audio.</audio>
             </div>
             <div class="audio-card reveal">
@@ -971,14 +966,14 @@
 <div class="section-wrap">
     <div class="section-label reveal">Why Register?</div>
     <h2 class="section-title reveal reveal-d1">Guest vs. Registered.<br>The Difference is Huge. ✦</h2>
-    <p class="section-desc reveal reveal-d2">See exactly what you unlock when you create your free CodeVerse account — takes 60 seconds.</p>
+    <p class="section-desc reveal reveal-d2">See exactly what you unlock when you create your free CodeVerse account. takes 60 seconds.</p>
     <div class="compare-wrap">
         <!-- GUEST -->
         <div class="compare-card guest-card reveal reveal-d1">
             <div class="compare-header">
                 <span class="compare-icon">👀</span>
                 <h3>Guest Access</h3>
-                <p>Browse with no sign-up — but you'll hit walls quickly. Great for a quick look around.</p>
+                <p>Browse with no sign-up. but you'll hit walls quickly. Great for a quick look around.</p>
             </div>
             <div class="compare-list">
                 <div class="compare-item has"><span class="ci-icon">✅</span> Access to 4 starter video lectures</div>
@@ -999,7 +994,7 @@
             <div class="compare-header">
                 <span class="compare-icon">🎓</span>
                 <h3>Registered Student</h3>
-                <p>Your full, personalised, unlimited learning experience — free forever, zero ads.</p>
+                <p>Your full, personalised, unlimited learning experience. free forever, zero ads.</p>
             </div>
             <div class="compare-list">
                 <div class="compare-item has"><span class="ci-icon">✅</span> Unlimited video lectures unlocked</div>
@@ -1013,7 +1008,7 @@
                 <div class="compare-item has"><span class="ci-icon">✅</span> UIT community &amp; peer groups</div>
                 <div class="compare-item has"><span class="ci-icon">✅</span> Download resources &amp; notes PDFs</div>
             </div>
-            <button class="compare-cta reg-cta" onclick="openModal(event)">Register Free — It's 60 Seconds →</button>
+            <button class="compare-cta reg-cta" onclick="openModal(event)">Register Free. It's 60 Seconds →</button>
         </div>
     </div>
 </div>
@@ -1124,7 +1119,7 @@
     <!-- CSS QUIZ -->
     <div class="quiz-panel" id="quiz-css">
         <div class="quiz-header">
-            <div class="quiz-header-left"><h3>🎨 CSS — Flexbox &amp; Grid</h3><p>Based on: CSS Full Course</p></div>
+            <div class="quiz-header-left"><h3>🎨 CSS. Flexbox &amp; Grid</h3><p>Based on: CSS Full Course</p></div>
             <div class="quiz-score-badge" id="score-css">Score: 0 / 5</div>
         </div>
         <div class="quiz-grid" id="qgrid-css"></div>
@@ -1135,18 +1130,18 @@
     <div style="margin-top:80px;">
         <div class="section-label">Pro Tips</div>
         <h2 class="section-title" style="margin-bottom:12px;">Study Smarter.<br>Not Harder. 💡</h2>
-        <p style="color:var(--muted);font-size:0.95rem;max-width:480px;line-height:1.7;margin-bottom:0;">One power tip per topic — distilled from each lecture so you can instantly apply what you've learned.</p>
+        <p style="color:var(--muted);font-size:0.95rem;max-width:480px;line-height:1.7;margin-bottom:0;">One power tip per topic. distilled from each lecture so you can instantly apply what you've learned.</p>
         <div class="tips-grid">
-            <div class="tip-card tip-py"><div class="tip-tag">🐍 Python</div><span class="tip-icon">⚡</span><h4>Use List Comprehensions</h4><p>Replace verbose <code>for</code> loops with list comprehensions: <code>[x*2 for x in nums]</code>. Cleaner, faster, and very Pythonic — interviewers love it.</p></div>
+            <div class="tip-card tip-py"><div class="tip-tag">🐍 Python</div><span class="tip-icon">⚡</span><h4>Use List Comprehensions</h4><p>Replace verbose <code>for</code> loops with list comprehensions: <code>[x*2 for x in nums]</code>. Cleaner, faster, and very Pythonic. interviewers love it.</p></div>
             <div class="tip-card tip-web"><div class="tip-tag">🌐 HTML5</div><span class="tip-icon">🏗️</span><h4>Semantic Tags Over Divs</h4><p>Use <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;article&gt;</code> instead of generic divs everywhere. Search engines and screen readers reward you for it.</p></div>
             <div class="tip-card tip-cs"><div class="tip-tag">🧠 CS</div><span class="tip-icon">📊</span><h4>Big-O is Your Friend</h4><p>Always ask: "what's the time complexity?" O(1) &gt; O(log n) &gt; O(n) &gt; O(n²). This one habit separates junior devs from seniors in every technical interview.</p></div>
-            <div class="tip-card tip-js"><div class="tip-tag">⚡ JavaScript</div><span class="tip-icon">🔒</span><h4>Prefer const, then let</h4><p>Default to <code>const</code>. Use <code>let</code> only when you need to reassign. Never use <code>var</code> — it has function scope and causes subtle bugs that are painful to debug.</p></div>
-            <div class="tip-card tip-react"><div class="tip-tag">⚛️ React</div><span class="tip-icon">🪝</span><h4>Keep Components Small</h4><p>If a component does more than one thing, split it. Single-responsibility components are easier to test, reuse, and reason about — the core of clean React architecture.</p></div>
+            <div class="tip-card tip-js"><div class="tip-tag">⚡ JavaScript</div><span class="tip-icon">🔒</span><h4>Prefer const, then let</h4><p>Default to <code>const</code>. Use <code>let</code> only when you need to reassign. Never use <code>var</code>. it has function scope and causes subtle bugs that are painful to debug.</p></div>
+            <div class="tip-card tip-react"><div class="tip-tag">⚛️ React</div><span class="tip-icon">🪝</span><h4>Keep Components Small</h4><p>If a component does more than one thing, split it. Single-responsibility components are easier to test, reuse, and reason about. the core of clean React architecture.</p></div>
             <div class="tip-card tip-node"><div class="tip-tag">🟢 Node.js</div><span class="tip-icon">🌐</span><h4>Always Use Async/Await</h4><p>Replace callback hell and raw Promises with <code>async/await</code>. Wrap in <code>try/catch</code> for clean error handling. Your future self will be grateful.</p></div>
             <div class="tip-card tip-git"><div class="tip-tag">🔀 Git</div><span class="tip-icon">✍️</span><h4>Write Atomic Commits</h4><p>One commit = one logical change. Use clear messages like <code>feat: add login form</code> or <code>fix: correct null check</code>. Conventional Commits makes your history readable at a glance.</p></div>
-            <div class="tip-card tip-ml"><div class="tip-tag">🤖 ML</div><span class="tip-icon">📈</span><h4>Never Skip EDA</h4><p>Exploratory Data Analysis (EDA) before modelling always saves time. Plot distributions, check for nulls, spot outliers. Garbage in = garbage out — no model can fix bad data.</p></div>
+            <div class="tip-card tip-ml"><div class="tip-tag">🤖 ML</div><span class="tip-icon">📈</span><h4>Never Skip EDA</h4><p>Exploratory Data Analysis (EDA) before modelling always saves time. Plot distributions, check for nulls, spot outliers. Garbage in = garbage out. no model can fix bad data.</p></div>
             <div class="tip-card tip-sql"><div class="tip-tag">🗄️ SQL</div><span class="tip-icon">🔍</span><h4>Index Your Foreign Keys</h4><p>Always index columns used in <code>WHERE</code>, <code>JOIN</code>, and <code>ORDER BY</code>. A missing index on a large table turns a millisecond query into a multi-second timeout.</p></div>
-            <div class="tip-card tip-css"><div class="tip-tag">🎨 CSS</div><span class="tip-icon">📐</span><h4>Flexbox for 1D, Grid for 2D</h4><p>Use <code>display:flex</code> for rows or columns. Use <code>display:grid</code> when you need both axes. Mixing them is fine — the rule is: reach for the right tool for the dimension.</p></div>
+            <div class="tip-card tip-css"><div class="tip-tag">🎨 CSS</div><span class="tip-icon">📐</span><h4>Flexbox for 1D, Grid for 2D</h4><p>Use <code>display:flex</code> for rows or columns. Use <code>display:grid</code> when you need both axes. Mixing them is fine. the rule is: reach for the right tool for the dimension.</p></div>
         </div>
     </div>
 
@@ -1160,10 +1155,10 @@
     <h2 class="section-title reveal reveal-d1">Built for the<br>Next Generation. ✦</h2>
     <div class="about-grid">
         <div>
-            <p class="section-desc" style="margin-bottom:0;">UIT University's CodeVerse Portal delivers flexible, accessible education to students across Pakistan and beyond — free of charge, always.</p>
+            <p class="section-desc" style="margin-bottom:0;">UIT University's CodeVerse Portal delivers flexible, accessible education to students across Pakistan and beyond. free of charge, always.</p>
             <div class="about-features">
                 <div class="feature-item reveal reveal-d1"><div class="feature-icon">🏆</div><div><h4>High-Quality Content</h4><p>All materials created and vetted by experienced UIT faculty members with deep industry backgrounds.</p></div></div>
-                <div class="feature-item reveal reveal-d2"><div class="feature-icon">📱</div><div><h4>Learn Anywhere</h4><p>Cross-platform compatibility — access from desktop, tablet, or mobile on any connection speed.</p></div></div>
+                <div class="feature-item reveal reveal-d2"><div class="feature-icon">📱</div><div><h4>Learn Anywhere</h4><p>Cross-platform compatibility. access from desktop, tablet, or mobile on any connection speed.</p></div></div>
                 <div class="feature-item reveal reveal-d3"><div class="feature-icon">🔄</div><div><h4>Always Fresh</h4><p>Continuously updated content reflecting current industry standards and the latest tech trends.</p></div></div>
                 <div class="feature-item reveal"><div class="feature-icon">🎯</div><div><h4>Structured Paths</h4><p>Curated sequences from beginner to advanced, so you always know exactly what to learn next.</p></div></div>
             </div>
@@ -1171,8 +1166,8 @@
         <div class="about-visual reveal reveal-d2">
             <div class="about-card-stack">
                 <div class="stack-card stack-card-1"><div class="card-label">Total Students</div><div class="card-num">5,200+</div><p>Active learners across CS, IT &amp; SE programs at UIT University</p></div>
-                <div class="stack-card stack-card-2"><div class="card-label">Course Completion</div><div class="card-num">94%</div><p>Students who finish enrolled courses — one of Pakistan's best</p></div>
-                <div class="stack-card stack-card-3"><div class="card-label">🎓 Academic Excellence</div><p style="font-size:0.85rem;color:var(--muted);margin-top:8px;line-height:1.6;">Affiliated with UIT University, Karachi — one of Pakistan's leading tech institutions since 2002.</p></div>
+                <div class="stack-card stack-card-2"><div class="card-label">Course Completion</div><div class="card-num">94%</div><p>Students who finish enrolled courses. one of Pakistan's best</p></div>
+                <div class="stack-card stack-card-3"><div class="card-label">🎓 Academic Excellence</div><p style="font-size:0.85rem;color:var(--muted);margin-top:8px;line-height:1.6;">Affiliated with UIT University, Karachi. one of Pakistan's leading tech institutions since 2002.</p></div>
             </div>
         </div>
     </div>
@@ -1186,7 +1181,7 @@
     <h2 class="section-title reveal reveal-d1">Get in Touch.<br>We're Here. 📡</h2>
     <div class="contact-grid">
         <div class="contact-info">
-            <div class="contact-item reveal reveal-d1"><div class="contact-item-icon">🏫</div><div><h4>University</h4><p>UIT University — Dept. of Computer Science</p></div></div>
+            <div class="contact-item reveal reveal-d1"><div class="contact-item-icon">🏫</div><div><h4>University</h4><p>UIT University. Dept. of Computer Science</p></div></div>
             <div class="contact-item reveal reveal-d2"><div class="contact-item-icon">📧</div><div><h4>Email</h4><a href="mailto:elearning@uitu.edu.pk">elearning@uitu.edu.pk</a></div></div>
             <div class="contact-item reveal reveal-d3"><div class="contact-item-icon">📞</div><div><h4>Phone</h4><a href="tel:+922112345678">+92-21-1234567</a></div></div>
             <div class="contact-item reveal"><div class="contact-item-icon">🌐</div><div><h4>Website</h4><a href="https://uitu.edu.pk" target="_blank">uitu.edu.pk</a></div></div>
@@ -1253,7 +1248,7 @@
         </div>
     </div>
 
-    <p class="footer-copy" style="margin-top:24px;">© 2025 UIT University — CodeVerse E-Learning Platform. All rights reserved.</p>
+    <p class="footer-copy" style="margin-top:24px;">© 2025 UIT University. CodeVerse E-Learning Platform. All rights reserved.</p>
 </footer>
 
 <script>
@@ -1381,10 +1376,10 @@ function checkStrength(val) {
     if (/[^A-Za-z0-9]/.test(val)) score++;
     const levels = [
         { w:'0%', c:'transparent', t:'Enter a password' },
-        { w:'25%', c:'#FF5C5C', t:'Weak — try harder 😅' },
-        { w:'50%', c:'#FFA500', t:'Fair — getting better 👍' },
-        { w:'75%', c:'#3DCCFF', t:'Strong — nice work! 💪' },
-        { w:'100%', c:'#CAFF4C', t:"Excellent — you're secure 🔒" },
+        { w:'25%', c:'#FF5C5C', t:'Weak. try harder 😅' },
+        { w:'50%', c:'#FFA500', t:'Fair. getting better 👍' },
+        { w:'75%', c:'#3DCCFF', t:'Strong. nice work! 💪' },
+        { w:'100%', c:'#CAFF4C', t:"Excellent. you're secure 🔒" },
     ];
     const l = val.length === 0 ? levels[0] : levels[score];
     fill.style.width = l.w; fill.style.background = l.c;
@@ -1479,7 +1474,7 @@ function handleSignIn() {
         highlightError('si-email'); highlightError('si-pass'); return;
     }
 
-    // Valid — restore session
+    // Valid. restore session
     errEl.classList.remove('show');
     activateRegisteredState(storedProfile);
     closeModal();
@@ -1505,7 +1500,7 @@ function activateRegisteredState(profile) {
     document.getElementById('profileEmailLg').textContent = profile.email;
     document.getElementById('profileEmailLg').href = 'mailto:' + profile.email;
     document.getElementById('profilePhoneLg').textContent = profile.phone;
-    document.getElementById('profileDobLg').textContent = profile.dob || '—';
+    document.getElementById('profileDobLg').textContent = profile.dob || ' ';
 
     document.getElementById('navQuizTips').style.display = '';
     document.getElementById('navBenefits').style.display = 'none';
@@ -1517,6 +1512,35 @@ function activateRegisteredState(profile) {
     document.getElementById('regAudio').style.display = 'block';
 }
 
+
+/* ── IFRAME ERROR DETECTION ── */
+function initVideoFallbacks() {
+    document.querySelectorAll('.video-thumb-wrap').forEach(wrap => {
+        const iframe = wrap.querySelector('.video-thumb');
+        const fallback = wrap.querySelector('.video-fallback');
+        if (!iframe || !fallback) return;
+
+        iframe.addEventListener('load', () => {
+            setTimeout(() => {
+                try {
+                    // Accessing contentDocument throws for valid cross-origin YouTube
+                    // If no error thrown = something went wrong (blank page)
+                    const doc = iframe.contentDocument || iframe.contentWindow.document;
+                    if (!doc || !doc.body || doc.body.innerHTML.trim() === '') {
+                        fallback.style.zIndex = '3'; // show fallback
+                    }
+                } catch(e) {
+                    // Cross-origin SecurityError = YouTube loaded correctly. do nothing
+                }
+            }, 1500);
+        });
+
+        iframe.addEventListener('error', () => {
+            fallback.style.zIndex = '3';
+        });
+    });
+}
+window.addEventListener('load', initVideoFallbacks);
 
 function toggleProfile() {
     document.getElementById('profileDropdown').classList.toggle('open');
@@ -1545,35 +1569,35 @@ const QUIZZES = {
     python: {
         qs: [
             { q: "What is the correct way to create a list in Python?", opts: ["list = (1,2,3)", "list = [1,2,3]", "list = {1,2,3}", "list = <1,2,3>"], ans: 1, exp: "Square brackets [] define a list. Parentheses create tuples, curly braces create sets/dicts." },
-            { q: "Which keyword defines a function in Python?", opts: ["function", "define", "def", "func"], ans: 2, exp: "'def' is used to define a function: def my_func(): — clean and minimal." },
+            { q: "Which keyword defines a function in Python?", opts: ["function", "define", "def", "func"], ans: 2, exp: "'def' is used to define a function: def my_func():. clean and minimal." },
             { q: "What does len([1,2,3,4,5]) return?", opts: ["4", "5", "6", "Error"], ans: 1, exp: "len() returns the number of elements. The list has 5 items, so the answer is 5." },
             { q: "What is a correct Python list comprehension to double numbers 1-5?", opts: ["[x*2 in range(1,6)]", "[x*2 for x in range(1,6)]", "(x*2 for x in range(1,6))", "map(x*2, range(1,6))"], ans: 1, exp: "List comprehension syntax: [expression for item in iterable]. Parentheses make a generator, not a list." },
-            { q: "Which data type is immutable in Python?", opts: ["list", "dict", "set", "tuple"], ans: 3, exp: "Tuples are immutable — once created, their contents cannot be changed. Use them for fixed data." }
+            { q: "Which data type is immutable in Python?", opts: ["list", "dict", "set", "tuple"], ans: 3, exp: "Tuples are immutable. once created, their contents cannot be changed. Use them for fixed data." }
         ], scores: 0, answered: 0
     },
     html: {
         qs: [
-            { q: "Which HTML5 tag is most appropriate for the main navigation?", opts: ["<div id='nav'>", "<navigation>", "<nav>", "<menu>"], ans: 2, exp: "The semantic <nav> element specifically marks navigation links — better for SEO and accessibility." },
-            { q: "What does the 'alt' attribute in an <img> tag provide?", opts: ["Image title on hover", "Alternative text for accessibility", "Image caption", "SEO keywords"], ans: 1, exp: "alt text is read by screen readers and shown when image fails to load — critical for accessibility." },
-            { q: "Which HTML5 input type validates an email format automatically?", opts: ['type="text"', 'type="mail"', 'type="email"', 'type="address"'], ans: 2, exp: 'type="email" provides built-in browser validation for email format — no JavaScript needed.' },
+            { q: "Which HTML5 tag is most appropriate for the main navigation?", opts: ["<div id='nav'>", "<navigation>", "<nav>", "<menu>"], ans: 2, exp: "The semantic <nav> element specifically marks navigation links. better for SEO and accessibility." },
+            { q: "What does the 'alt' attribute in an <img> tag provide?", opts: ["Image title on hover", "Alternative text for accessibility", "Image caption", "SEO keywords"], ans: 1, exp: "alt text is read by screen readers and shown when image fails to load. critical for accessibility." },
+            { q: "Which HTML5 input type validates an email format automatically?", opts: ['type="text"', 'type="mail"', 'type="email"', 'type="address"'], ans: 2, exp: 'type="email" provides built-in browser validation for email format. no JavaScript needed.' },
             { q: "What is the purpose of the <article> tag?", opts: ["Any clickable content", "Self-contained content that could be shared independently", "The main page article", "News headlines only"], ans: 1, exp: "<article> represents self-contained content like a blog post or news story that makes sense on its own." },
-            { q: "Which attribute makes a form field required in HTML5?", opts: ["mandatory", "required", "validate", "must-fill"], ans: 1, exp: "The required attribute (boolean) prevents form submission if the field is empty — pure HTML, no JS." }
+            { q: "Which attribute makes a form field required in HTML5?", opts: ["mandatory", "required", "validate", "must-fill"], ans: 1, exp: "The required attribute (boolean) prevents form submission if the field is empty. pure HTML, no JS." }
         ], scores: 0, answered: 0
     },
     cs: {
         qs: [
-            { q: "What is the time complexity of Binary Search?", opts: ["O(n)", "O(n²)", "O(log n)", "O(1)"], ans: 2, exp: "Binary search halves the search space each step — O(log n). Much faster than linear O(n) search." },
-            { q: "Which data structure uses LIFO (Last In, First Out)?", opts: ["Queue", "Stack", "Linked List", "Tree"], ans: 1, exp: "A Stack is LIFO. Think of a stack of plates — you remove from the top. Queues are FIFO (First In, First Out)." },
+            { q: "What is the time complexity of Binary Search?", opts: ["O(n)", "O(n²)", "O(log n)", "O(1)"], ans: 2, exp: "Binary search halves the search space each step. O(log n). Much faster than linear O(n) search." },
+            { q: "Which data structure uses LIFO (Last In, First Out)?", opts: ["Queue", "Stack", "Linked List", "Tree"], ans: 1, exp: "A Stack is LIFO. Think of a stack of plates. you remove from the top. Queues are FIFO (First In, First Out)." },
             { q: "What does RAM stand for in computing?", opts: ["Read Access Memory", "Random Access Memory", "Runtime Application Memory", "Rapid Access Module"], ans: 1, exp: "RAM (Random Access Memory) is volatile memory used to store data the CPU is actively using." },
-            { q: "In a Binary Tree, how many children can each node have at most?", opts: ["1", "2", "3", "Unlimited"], ans: 1, exp: "A binary tree node has at most 2 children — left and right. This constraint makes traversal algorithms efficient." },
+            { q: "In a Binary Tree, how many children can each node have at most?", opts: ["1", "2", "3", "Unlimited"], ans: 1, exp: "A binary tree node has at most 2 children. left and right. This constraint makes traversal algorithms efficient." },
             { q: "What is an Algorithm?", opts: ["A programming language", "A type of computer hardware", "A step-by-step procedure to solve a problem", "A database query"], ans: 2, exp: "An algorithm is a finite, step-by-step set of instructions to solve a problem or perform a computation." }
         ], scores: 0, answered: 0
     },
     js: {
         qs: [
             { q: "Which keyword declares a block-scoped variable in modern JavaScript?", opts: ["var", "let", "variable", "declare"], ans: 1, exp: "'let' is block-scoped. 'var' is function-scoped and can cause hoisting bugs. Always prefer let or const." },
-            { q: "What does === check in JavaScript?", opts: ["Value only", "Type only", "Value AND type (strict equality)", "Reference only"], ans: 2, exp: "=== is strict equality — checks both value and type. 0 == '0' is true, but 0 === '0' is false." },
-            { q: "What will typeof null return in JavaScript?", opts: ['"null"', '"undefined"', '"object"', '"string"'], ans: 2, exp: "typeof null returns 'object' — this is a famous JavaScript bug from 1995 that was never fixed for backwards compatibility." },
+            { q: "What does === check in JavaScript?", opts: ["Value only", "Type only", "Value AND type (strict equality)", "Reference only"], ans: 2, exp: "=== is strict equality. checks both value and type. 0 == '0' is true, but 0 === '0' is false." },
+            { q: "What will typeof null return in JavaScript?", opts: ['"null"', '"undefined"', '"object"', '"string"'], ans: 2, exp: "typeof null returns 'object'. this is a famous JavaScript bug from 1995 that was never fixed for backwards compatibility." },
             { q: "Which method adds an element to the END of an array?", opts: [".shift()", ".unshift()", ".push()", ".append()"], ans: 2, exp: ".push() adds to the end. .pop() removes from end. .unshift() adds to start. .shift() removes from start." },
             { q: "What is a closure in JavaScript?", opts: ["A way to end a function", "A function that remembers variables from its outer scope", "A method to close the browser", "An ES6 arrow function"], ans: 1, exp: "A closure is a function that retains access to its outer scope's variables even after the outer function returns." }
         ], scores: 0, answered: 0
@@ -1583,15 +1607,15 @@ const QUIZZES = {
             { q: "What hook is used to manage state in a React functional component?", opts: ["useEffect", "useState", "useContext", "useRef"], ans: 1, exp: "useState returns [state, setState]. Call setState to trigger a re-render with the new value." },
             { q: "What must every React component's render return?", opts: ["A string", "A single root JSX element (or Fragment)", "An array", "A DOM element directly"], ans: 1, exp: "React components must return a single root element. Use <React.Fragment> or <> </> to wrap multiple elements without adding a DOM node." },
             { q: "What is the purpose of useEffect?", opts: ["Managing state", "Styling components", "Handling side effects (API calls, subscriptions, timers)", "Creating refs"], ans: 2, exp: "useEffect runs after render. Use it for data fetching, DOM manipulation, subscriptions, and cleanup." },
-            { q: "What is a key prop used for in React lists?", opts: ["Styling each list item", "Helping React identify which items changed for efficient re-rendering", "Setting item IDs in the DOM", "Sorting the list"], ans: 1, exp: "Keys help React's reconciliation algorithm identify which items were added, removed, or reordered — always use stable unique IDs." },
-            { q: "What is the correct way to pass data from parent to child in React?", opts: ["State", "Props", "Context only", "Redux only"], ans: 1, exp: "Props (properties) pass data from parent to child. They are read-only in the child — one-way data flow." }
+            { q: "What is a key prop used for in React lists?", opts: ["Styling each list item", "Helping React identify which items changed for efficient re-rendering", "Setting item IDs in the DOM", "Sorting the list"], ans: 1, exp: "Keys help React's reconciliation algorithm identify which items were added, removed, or reordered. always use stable unique IDs." },
+            { q: "What is the correct way to pass data from parent to child in React?", opts: ["State", "Props", "Context only", "Redux only"], ans: 1, exp: "Props (properties) pass data from parent to child. They are read-only in the child. one-way data flow." }
         ], scores: 0, answered: 0
     },
     node: {
         qs: [
             { q: "What does Express.js provide on top of Node.js?", opts: ["A database", "A templating engine only", "A minimal web framework with routing and middleware", "A front-end UI library"], ans: 2, exp: "Express adds routing, middleware support, and request/response helpers to Node.js's raw HTTP module." },
             { q: "What HTTP method is used to CREATE a resource in REST APIs?", opts: ["GET", "PUT", "POST", "PATCH"], ans: 2, exp: "POST creates. GET reads. PUT replaces. PATCH partially updates. DELETE removes. This is the REST convention." },
-            { q: "In Node.js, what does require() do?", opts: ["Creates a new file", "Imports a module", "Runs a script asynchronously", "Declares a variable"], ans: 1, exp: "require() imports modules — built-in (fs, http), npm packages, or your own files. ES6 uses import/export instead." },
+            { q: "In Node.js, what does require() do?", opts: ["Creates a new file", "Imports a module", "Runs a script asynchronously", "Declares a variable"], ans: 1, exp: "require() imports modules. built-in (fs, http), npm packages, or your own files. ES6 uses import/export instead." },
             { q: "What is middleware in Express.js?", opts: ["Database query functions", "Functions that execute during the request-response cycle", "HTML template engines", "Static file handlers only"], ans: 1, exp: "Middleware are functions with (req, res, next). They can modify req/res or pass to the next handler with next()." },
             { q: "Which method starts an Express server listening on a port?", opts: ["app.start()", "app.run()", "app.listen()", "app.serve()"], ans: 2, exp: "app.listen(PORT, callback) starts the server. Common pattern: app.listen(3000, () => console.log('Server running'))." }
         ], scores: 0, answered: 0
@@ -1609,8 +1633,8 @@ const QUIZZES = {
         qs: [
             { q: "Which type of learning uses labelled training data?", opts: ["Unsupervised Learning", "Reinforcement Learning", "Supervised Learning", "Transfer Learning"], ans: 2, exp: "Supervised learning trains on input-output pairs. The model learns to map inputs to correct outputs from labelled examples." },
             { q: "What does overfitting mean in machine learning?", opts: ["The model is too simple", "The model performs great on training data but poorly on new data", "The model has too few parameters", "The training data is too large"], ans: 1, exp: "Overfitting means the model memorised training data instead of learning patterns. Fix with more data, regularisation, or dropout." },
-            { q: "Which Python library is most commonly used for ML?", opts: ["NumPy only", "Pandas only", "TensorFlow only", "scikit-learn"], ans: 3, exp: "scikit-learn provides consistent APIs for classification, regression, clustering, and preprocessing — ideal for beginners." },
-            { q: "What is a feature in machine learning?", opts: ["The model's prediction", "A measurable input variable used to make predictions", "The training algorithm", "The loss function"], ans: 1, exp: "Features are input variables (columns in your dataset). Feature engineering — choosing and transforming features — heavily impacts model performance." },
+            { q: "Which Python library is most commonly used for ML?", opts: ["NumPy only", "Pandas only", "TensorFlow only", "scikit-learn"], ans: 3, exp: "scikit-learn provides consistent APIs for classification, regression, clustering, and preprocessing. ideal for beginners." },
+            { q: "What is a feature in machine learning?", opts: ["The model's prediction", "A measurable input variable used to make predictions", "The training algorithm", "The loss function"], ans: 1, exp: "Features are input variables (columns in your dataset). Feature engineering. choosing and transforming features. heavily impacts model performance." },
             { q: "What does the train/test split achieve?", opts: ["Speeds up training", "Evaluates how well the model generalises to unseen data", "Reduces the dataset size", "Improves data quality"], ans: 1, exp: "Splitting data into train and test sets prevents leakage. The test set simulates real-world unseen data for honest evaluation." }
         ], scores: 0, answered: 0
     },
